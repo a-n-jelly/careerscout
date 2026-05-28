@@ -28,6 +28,17 @@
 
 ---
 
+## Tailoring preferences
+
+_Applies when using `/tailor-resume`. Leave blank to use defaults._
+
+- **Change threshold:** [minimal — only change bullets that are clearly wrong for the role / moderate — suggest meaningful reframes / aggressive — tailor heavily]
+- **Rephrasing:** [skip — don't suggest changes that are just rewording / allow — suggest if it improves clarity]
+- **Summary:** [update if needed / leave unless it's clearly wrong / always suggest a tailored version]
+- **Parroting JD language:** [never — keep my voice throughout / ok if it's a key term]
+
+---
+
 ## Q&A Bank
 
 Answers to questions that come up repeatedly — screening calls, applications, cover letters.

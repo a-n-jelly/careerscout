@@ -27,6 +27,19 @@ Requires a JD. Without it: "Paste the JD and I'll tailor the resume to it."
 
 **Don't rewrite bullets that are already strong.** Before suggesting a change, ask: is this actually weak, or am I just looking for something to do? If a bullet is already doing the job, say so explicitly and move on. Rewriting for the sake of it introduces fabricated framing and erodes trust in the output.
 
+**Rephrasing alone is not a change worth making.** If the only difference between the original and the suggested version is word choice or sentence structure — and the meaning, emphasis, and impact are the same — do not suggest it. A change must add something: a sharper angle, a clearer outcome, a more relevant framing for this specific role. If it doesn't, leave the original.
+
+---
+
+## Tailoring preferences
+
+Read `context/bank.md` before starting. If it contains a `## Tailoring preferences` section, follow those instructions. They override defaults where they conflict. Common preferences users set:
+
+- How aggressively to change bullets (minimal / moderate / aggressive)
+- Whether to suggest summary changes at all
+- Whether to flag bullets to drop vs just reframe
+- Threshold for what counts as a meaningful change
+
 ---
 
 ## Sequence
