@@ -287,23 +287,21 @@ If yes, first detect the OS by running `uname -s`. Then follow the appropriate p
 
 #### macOS (`uname -s` returns `Darwin`)
 
-1. Check if `feed-agent/run-daily.sh` exists. If not, create it:
+1. Make the run script executable:
 
 ```bash
-#!/bin/bash
-set -euo pipefail
-trap 'osascript -e "display notification \"Feed failed — check run.log\" with title \"Job Feed\"" 2>/dev/null' ERR
-AGENT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-PYTHON="$AGENT_DIR/feed-agent/.venv/bin/python3"
-cd "$AGENT_DIR"
-echo "--- $(date '+%Y-%m-%d %H:%M:%S') ---" >> feed-agent/run.log
-"$PYTHON" feed-agent/fetch.py >> feed-agent/run.log 2>&1
-echo "Done." >> feed-agent/run.log
+chmod +x feed-agent/run-daily.sh
 ```
 
-Make it executable: `chmod +x feed-agent/run-daily.sh`
+2. Set up your local config. Run `which claude` to find your claude binary path, then:
 
-2. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.[username].jobfeed.plist`:
+```bash
+cp feed-agent/config.sh.template feed-agent/config.sh
+```
+
+Open `feed-agent/config.sh` and set `CLAUDE_BIN` to the path from `which claude`. This file is gitignored — it stays on your machine only.
+
+3. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.[username].jobfeed.plist`:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -335,8 +333,16 @@ Make it executable: `chmod +x feed-agent/run-daily.sh`
 </plist>
 ```
 
-3. Load it: `launchctl load ~/Library/LaunchAgents/com.[username].jobfeed.plist`
-4. Confirm: `launchctl list | grep jobfeed` — should show the job listed.
+4. Load it: `launchctl load ~/Library/LaunchAgents/com.[username].jobfeed.plist`
+
+5. **Grant Full Disk Access to bash** — required for launchd to read files in ~/Documents:
+   - Open **System Settings → Privacy & Security → Full Disk Access**
+   - Click **+**, then press **⌘⇧G**, type `/bin/bash`, and click Open
+   - You'll see bash added to the list — toggle it on if it isn't already
+
+6. Confirm: `launchctl list | grep jobfeed` — should show the job listed.
+
+> The scheduler fires at 8am daily. If your machine is asleep at 8am, it runs automatically when you wake it — no manual trigger needed.
 
 ---
 

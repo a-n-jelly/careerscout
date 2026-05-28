@@ -27,6 +27,9 @@ feed-agent/learnings.md
 feed/feed.md
 feed/archive/
 
+# User-specific config (each user creates their own from config.sh.template)
+feed-agent/config.sh
+
 # Python
 feed-agent/.venv/
 __pycache__/

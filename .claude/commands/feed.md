@@ -14,6 +14,8 @@ Read:
 
 That's it. Do not load resume.md, profile.md, or storybank.md.
 
+**Freshness check:** After loading today.json, compare the `fetched_date` field against today's date. If they don't match, stop immediately and say so — don't run the feed on stale data. Ask whether to trigger fetch.py first.
+
 ---
 
 ## Step 2 — Archive previous feed
@@ -25,11 +27,13 @@ Skip if it's the placeholder ("No feed run yet").
 
 ## Step 2.5 — Extract key requirements per role
 
-For each role that passes initial filtering, extract 4-5 key requirements to include in the feed output:
+`enrich.py` runs before this step and pre-fetches descriptions from Greenhouse and Lever APIs, writing them into today.json. Trust that output — do not re-fetch what enrich.py already retrieved.
 
-- If `description` is non-empty in today.json (Indeed/LinkedIn roles): extract the top 4-5 requirements directly from the description text.
-- If `description` is empty (ATS roles — Greenhouse, Lever, Ashby): fetch the job URL using WebFetch with prompt "List the top 5 key requirements from this job posting as short bullet points." Cache results — don't re-fetch the same URL twice.
-- If the URL is inaccessible or returns no content: write "Requirements not available — open link to review."
+For each role that passes initial filtering:
+
+- If `description` is non-empty: extract the top 4-5 requirements directly from the description text. This covers Indeed, LinkedIn-with-description, and all Greenhouse/Lever roles enriched by enrich.py.
+- If `description_available` is `false` (LinkedIn-only roles enrich.py couldn't reach): write "Requirements not available — open link to review." Do not WebFetch.
+- If `description` is empty and `description_available` is not `false` (Ashby roles, or any edge case enrich.py skipped): attempt one WebFetch. If it returns no content, write "Requirements not available — open link to review."
 
 ---
 
@@ -45,7 +49,7 @@ Score each role on four dimensions (0–3 each). Total 0–12.
 
 - **Edge (0–3)** — do the differentiators in `context/differentiators.md` give a specific advantage for this role? Use the "Notes for scoring" section in that file.
 
-- **Sustain (0–3)** — comp + location. At/above target base = 3. At floor = 1. Below floor or no location data = 0.
+- **Sustain (0–3)** — location first, then comp. Location is a hard gate: if the role is not Seattle, not remote/US-remote, or requires relocation — Sustain = 0, full stop, regardless of comp. If location passes: at/above target base ($180K+) = 3. At floor ($150K) = 1. Below floor or comp not listed but location is good = 2. No location data = 0.
 
 **Recommend thresholds — use the `level` field from today.json:**
 
