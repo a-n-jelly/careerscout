@@ -63,7 +63,7 @@ flowchart LR
 
 ## Setup
 
-**Prerequisites:** [Claude Code](https://claude.ai/code) and Python 3.x (feed only).
+**Prerequisites:** [Claude Code](https://claude.ai/code) installed. Python 3.x only needed for the job feed.
 
 ### 1. Clone and open
 
@@ -74,38 +74,16 @@ cd career-coach
 
 Open Claude Code in this directory.
 
-### 2. Add your resume
+### 2. Run `/setup`
 
-Paste your resume into Claude Code. The agent saves it to `context/resume.md`.
+Type `/setup` in Claude Code. It walks you through everything in one flow:
 
-### 3. Set up context files
+- Saves your resume
+- Creates your context files from templates
+- Calibrates your writing voice (optional)
+- Configures the job feed (optional)
 
-```bash
-cp context/profile.example.md context/profile.md
-cp context/bank.example.md context/bank.md
-cp context/state.example.md context/state.md
-cp context/sources.example.md context/sources.md
-cp context/differentiators.example.md context/differentiators.md
-```
-
-### 4. Calibrate your writing voice
-
-Run `/voice-setup` and paste 3-5 pieces of your own writing. Takes 5-10 minutes and makes every written output significantly more accurate.
-
-### 5. Set up the job feed (optional)
-
-```bash
-cd feed-agent
-python3 -m venv .venv
-source .venv/bin/activate      # Windows: .venv\Scripts\activate
-pip install python-jobspy certifi
-```
-
-Then run `/feed-setup` in Claude Code. It drafts your search criteria, asks about comp and deal-breakers, and sets up a daily scheduler.
-
-### 6. Start
-
-Paste a job description to run `/assess`, or run `python3 feed-agent/fetch.py` then `/feed` for your first scored feed.
+Each step can be skipped and done later.
 
 ---
 

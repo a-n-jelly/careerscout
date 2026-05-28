@@ -62,6 +62,7 @@ Full protocols in `.claude/commands/`. Brief reference:
 
 | Command | What it does |
 |---------|--------------|
+| `/setup` | Full onboarding — resume, context files, voice, feed |
 | `/voice-setup` | Calibrate writing voice from real samples |
 | `/feed-setup` | Configure job feed — comp, deal-breakers, scheduler |
 | `/feed` | Score today's fetched roles, write shortlist |
