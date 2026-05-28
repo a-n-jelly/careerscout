@@ -12,7 +12,7 @@ Two loops: the **feed** finds roles worth applying to, the **application loop** 
 
 ### Feed loop
 
-`fetch.py` runs daily (or manually) and scrapes LinkedIn, Indeed, and direct ATS boards for roles matching your criteria. It filters by title, level, location, and your avoid list — then saves the results to `today.json`. Run `/feed` in Claude Code to score and rank them against your profile, producing a shortlist in `feed.md`. React to the results with `/calibrate` and the feed gets sharper over time.
+`fetch.py` runs daily (or manually) and scrapes LinkedIn, Indeed, and direct ATS boards for roles matching your criteria. It filters by title, level, location, and your avoid list — then saves the results to `today.json`. Run `/feed` in Claude Code to score and rank them against your profile, producing a shortlist in `feed.md`. React to the results with `/calibrate` and the scoring gets sharper over time.
 
 | Command | What it does |
 |---------|--------------|
@@ -21,7 +21,9 @@ Two loops: the **feed** finds roles worth applying to, the **application loop** 
 | `/feed reject` | Log why a role wasn't right — teaches the feed to stop surfacing similar ones |
 | `/retro` | Periodic review — rejection patterns, pipeline health |
 
-> The first few feeds will need calibration. Run `/calibrate` after each early run until the signal feels right — usually 3-5 runs.
+> **Scoring calibration:** The first few feeds will have noise. Run `/calibrate` after each early run until the scoring feels right — usually 3-5 runs.
+>
+> **Fetch calibration:** `/calibrate` only tunes how roles are scored — it doesn't affect which roles are fetched in the first place. If you see a role on LinkedIn that never appeared in the feed, that's a fetch gap: the scraper either missed it (JobSpy returns the top N results per query, not a complete list), a query term doesn't cover it, or an ATS slug is broken. Fetch calibration is an ongoing process — if you notice a pattern, add or refine queries in `context/sources.md`.
 
 ### Application loop
 
