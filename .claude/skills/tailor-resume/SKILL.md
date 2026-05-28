@@ -33,12 +33,17 @@ Requires a JD. Without it: "Paste the JD and I'll tailor the resume to it."
 
 ## Tailoring preferences
 
-Read `context/bank.md` before starting. If it contains a `## Tailoring preferences` section, follow those instructions. They override defaults where they conflict. Common preferences users set:
+Read `context/bank.md` before starting. If it contains a `## Tailoring preferences` section with filled-in values, follow those instructions — they override defaults where they conflict.
 
-- How aggressively to change bullets (minimal / moderate / aggressive)
-- Whether to suggest summary changes at all
-- Whether to flag bullets to drop vs just reframe
-- Threshold for what counts as a meaningful change
+**If the section is empty or missing**, this is the user's first tailor session. Use the AskUserQuestion tool to set preferences before proceeding:
+
+- Question: "Before we start — a couple of quick questions so I tailor the right way for you."
+- Ask in a single tool call:
+  - **How much do you want to change?** Options: Minimal — only change bullets that are clearly wrong for this role / Moderate — suggest meaningful reframes where they'd help / Aggressive — tailor heavily to the JD
+  - **Rephrasing:** Options: Skip it — if it's just rewording, leave the original / Allow it — suggest if it improves clarity or flow
+  - **JD language:** Options: Never parrot it — keep my voice throughout / OK for key terms — match their language where it matters
+
+Save the answers to the `## Tailoring preferences` section in `context/bank.md` immediately. Confirm: "Got it — saved your preferences. I'll follow these every time."
 
 ---
 
@@ -97,6 +102,20 @@ Why: [one sentence — include original only if the contrast materially helps]
 ### Needs More Information
 [Any rewrites blocked on context you don't have, with the specific question]
 ```
+
+---
+
+## Learning from the session
+
+After going through bullets with the user, capture what you observed and update `context/bank.md` and `context/profile.md` silently — do not announce unless the inferred rule is ambiguous.
+
+**Watch for:**
+- **Accepted rewrites** — what kind of change did they approve? (sharper metric, reframed angle, dropped jargon). Reinforce in Tailoring preferences if there's a pattern.
+- **Pushed-back rewrites** — what did they reject and why? Common signals: "too formal", "that's not how I'd say it", "don't change this", "you're parroting the JD". Add a rule to Tailoring preferences.
+- **Their own rewrites** — if the user rewrites a bullet themselves, treat it as a voice example. Capture the before/after and add a rule to bank.md or my-voice/SKILL.md.
+- **Profile context** — if the user explains why a bullet is worded a certain way ("I was actually doing X not Y"), add that context to `context/profile.md` under the relevant role.
+
+Format learned rules as: `- [what to do / avoid] (learned from: tailor session [date])`
 
 ---
 
