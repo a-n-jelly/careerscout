@@ -12,17 +12,6 @@ Two loops: the **feed** finds roles worth applying to, the **application loop** 
 
 ### Feed loop
 
-```mermaid
-flowchart LR
-    A["fetch.py<br/>runs daily at 8am"] -->|"scrapes LinkedIn,<br/>Indeed, ATS"| B["today.json<br/>filtered roles"]
-    B --> C["/feed<br/>scores each role"]
-    C -->|"Recommended /<br/>Stretch / Skipped"| D["feed.md<br/>your shortlist"]
-    D --> E{your reaction}
-    E -->|felt off| F[/calibrate]
-    E -->|worth applying| G[application loop]
-    F -->|updates| H[("sources.md<br/>learnings.md<br/>differentiators.md")]
-    H -->|read on next run| A
-```
 
 | Command | What it does |
 |---------|--------------|
@@ -36,18 +25,6 @@ flowchart LR
 
 ### Application loop
 
-```mermaid
-flowchart LR
-    A["feed.md<br/>shortlist"] -->|pick a role| B["/assess<br/>fit verdict + concerns"]
-    Z[paste a JD] --> B
-    B --> C["/tailor-resume<br/>resume bullets"]
-    C --> D["/cover-letter<br/>in your voice"]
-    D --> E[apply]
-    E --> F{outcome}
-    F -->|rejection| H
-    F -->|offer| H
-    H --> I["/track<br/>pipeline view"]
-```
 
 | Command | What it does |
 |---------|--------------|
