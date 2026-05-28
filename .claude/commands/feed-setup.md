@@ -93,9 +93,23 @@ Ask:
 - "How many results per feed run?" — Options: 10 / 25 (recommended) / 50
 - "How fresh should roles be?" — Options: Last 24 hours / Last 48 hours / Last 72 hours (recommended) / Last week
 
+---
+
+**Group 6 — Mnookin doc (optional)**
+
+Use the AskUserQuestion tool:
+- "Do you have a Mnookin doc — a personal positioning brief that describes your background, what you're targeting, and how you differentiate yourself?" — Options: **Yes, I'll paste it** / **No, skip this**
+
+If yes: ask them to paste it. Once received:
+- Use it to refine the search queries drafted in Step 2 — the Mnookin doc often surfaces domain language, role types, or target signals that the resume alone doesn't reveal
+- Use it as primary input for Step 3b (differentiators) — it will be more accurate than resume inference alone
+- Save it to `context/profile.md` under a `## Mnookin Doc` section so it's available to future sessions
+
+If no: proceed without it. The feed will be built from resume inference alone and will improve over time with `/calibrate`.
+
 ### Step 3b — Draft differentiators.md
 
-From `resume.md` and any CMF/Mnookin docs provided, extract:
+From `resume.md` and the Mnookin doc (if provided), extract:
 
 1. **Key edges** — what this candidate has that most candidates don't. Look for: scale signals, cross-functional complexity, ownership depth, domain intersections, unusual credentials. Write 3–4 bullets, each with a "why it matters" clause.
 2. **Target level** — infer from their most recent title and trajectory
