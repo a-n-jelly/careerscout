@@ -66,7 +66,4 @@ echo "Enriching descriptions..." >> "$LOG"
 echo "Scoring feed..." >> "$LOG"
 "$CLAUDE_BIN" --model claude-sonnet-4-5 --dangerously-skip-permissions -p "/feed" >> "$LOG" 2>&1
 
-echo "Notifying..." >> "$LOG"
-bash feed-agent/notify.sh
-
 echo "Done." >> "$LOG"
