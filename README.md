@@ -121,15 +121,14 @@ Copy the `*.example.md` files to get started. Each one has a purpose header.
 - [Claude Code](https://claude.ai/code) installed
 - Python 3.x (for the job feed only — all other commands work without it)
 
-### 1. Clone and run setup
+### 1. Clone and open
 
 ```bash
 git clone <repo>
 cd career-coach
-bash setup.sh
 ```
 
-This creates the `.claude/commands` and `.claude/skills` symlinks that Claude Code needs to recognise the slash commands. Run it once after cloning.
+Open Claude Code in this directory.
 
 ### 2. Add your resume
 

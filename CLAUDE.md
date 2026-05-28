@@ -31,7 +31,7 @@ Each file has a purpose header explaining what it's for and when the agent reads
 
 Run `/voice-setup` in Claude Code. Paste 3-5 pieces of your own writing — emails, messages, anything that sounds like you — and the agent will draft your voice profile from them. Takes 5-10 minutes and makes every written output significantly more accurate.
 
-Alternatively, fill in `skills/my-voice/SKILL.md` manually. The voice profile also improves automatically during normal use: whenever you correct the agent's output, it captures what changed and updates the skill.
+Alternatively, fill in `.claude/skills/my-voice/SKILL.md` manually. The voice profile also improves automatically during normal use: whenever you correct the agent's output, it captures what changed and updates the skill.
 
 ### 4. Set up the feed agent (optional)
 
@@ -106,7 +106,7 @@ After any major output (completed cover letter, rewritten bullet set, fit assess
 
 ## Commands
 
-See `commands/` for full execution protocols. Brief reference:
+See `.claude/commands/` for full execution protocols. Brief reference:
 
 | Command | What It Does |
 |---------|--------------|
@@ -160,7 +160,7 @@ After any written output (cover letter, tailored bullet, email draft), watch for
 When a correction occurs:
 1. Identify what changed — tone, structure, a specific word or phrase, sentence length, opening/closing pattern
 2. Infer the rule behind the change
-3. Add it to the `## Learned rules` section of `skills/my-voice/SKILL.md`
+3. Add it to the `## Learned rules` section of `.claude/skills/my-voice/SKILL.md`
 4. Confirm briefly: "Got it — added: [rule in one line]"
 
 Do not ask permission before updating the skill. Do not announce it unless the learned rule is ambiguous and you need to confirm the inference.
@@ -194,7 +194,7 @@ These are defaults — adjust them in `context/bank.md` to match your own prefer
 | `feed/archive/` | Previous feed runs saved by date | Yes — archived automatically |
 | `cover-letters/[company-role].md` | One file per cover letter — drafts and submitted versions | Yes — created by `/coverletter` |
 | `resumes/` | Master resume + any tailored versions for specific roles | No |
-| `commands/*.md` | Full execution protocols for each command | No |
+| `.claude/commands/*.md` | Full execution protocols for each command | No |
 
 ### Finding files for a specific application
 
