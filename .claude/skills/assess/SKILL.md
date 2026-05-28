@@ -161,14 +161,48 @@ do not belong here — they stay in the assessment output only.
 
 ---
 
-## Self-Update on Feedback
+## Feedback Loop
 
-When the user pushes back on a verdict, challenges a concern, or provides context that changes the assessment, do two things:
+Every reaction to the assessment output is signal. Route it to the right place — don't just revise inline and lose it.
 
-1. Revise the output based on what they said.
-2. If the correction reveals a reusable principle — something that would apply to future assessments, not just this one — append it to the Calibration Log below. Keep each entry tight: the rule, why it exists, and when to apply it.
+### What to watch for
 
-Don't log one-off context (e.g. "this specific company prefers X"). Only log patterns that generalise.
+| Signal | Examples |
+|--------|---------|
+| Verdict correction | "This is a much better fit than you rated it", "I actually think this is a long shot" |
+| Concern challenged | "That's not really a concern", "I have experience there actually", "They don't care about that" |
+| Concern confirmed | "Yeah that's exactly what I'm worried about" — useful for framing prep |
+| Mnookin reaction | "Yes that's exactly why I don't want it", "I actually don't mind that kind of environment" |
+| Differentiator resonance | "That angle is exactly right", "That's not how I'd frame it at all" |
+
+### Where it routes
+
+**Verdict or dimension correction → Calibration Log (below)**
+If the correction reveals a principle that generalises across roles (not just this one), add it to the Calibration Log. Keep each entry tight: the rule, why it exists, when to apply it. Skip one-off context — that goes to `context/bank.md` as a framing note instead.
+
+**Recruiter concern pushback → Calibration Log or bank.md**
+- If the pushback reveals a reusable assessment rule → Calibration Log
+- If it's context specific to this role or company (e.g. "they care more about X than the JD suggests") → add a framing note to `context/bank.md`
+
+**Mnookin reaction → `context/profile.md ## Mnookin calibration`**
+When the user confirms, pushes back on, or adds nuance to the Mnookin Fit rating, infer the specific preference it reveals and write it to `context/profile.md`. Create the section if it doesn't exist:
+
+```markdown
+## Mnookin calibration
+
+_Preferences refined from assess sessions — more specific than the Mnookin Doc._
+
+- [specific preference, with the context that surfaced it]
+```
+
+Confirm: "Got it — added to your Mnookin profile: [preference in one line]"
+
+**Differentiator resonance → offer to update `context/differentiators.md`**
+If the Cover Letter Angle or Differentiation Potential section resonates strongly — or the user says "that's not how I'd frame it" — ask whether to update the positioning summary in `context/differentiators.md`. Only write with explicit confirmation.
+
+### Minimum bar for writing
+
+Only write if the feedback reveals something reusable. Ask: would this change how I assess a *different* role in future? If no — don't log it. If yes — log it.
 
 ---
 

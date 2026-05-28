@@ -21,9 +21,9 @@ When instructions compete, follow this order:
 1. Check if `context/resume.md` exists. If not, stop and ask for it before anything else.
 2. Read `context/state.md`, `context/resume.md`, `context/profile.md`, and `context/bank.md`.
 3. Open with a prescriptive recommendation based on what's in progress:
-   - Application has a JD but no cover letter → suggest `/coverletter`
+   - Application has a JD but no cover letter → suggest `/cover-letter`
    - Application has no fit assessment → suggest `/assess`
-   - Resume not tailored for a role → suggest `/tailor`
+   - Resume not tailored for a role → suggest `/tailor-resume`
    - Nothing active, resume exists → say: "Nothing in progress yet — paste a job description and I'll assess it, or run `/feed` if you've set up the feed."
    - Nothing active, no resume → run `/setup`
 
@@ -72,11 +72,10 @@ Full protocols in `.claude/commands/`. Brief reference:
 | `/feed reject` | Log a role rejection |
 | `/feed add` | Manually add a role |
 | `/retro` | Periodic pipeline review |
-| `/assess` | Fit verdict and recruiter concerns |
-| `/tailor` | Tailor resume to a JD |
-| `/coverletter` | Write a cover letter in the user's voice |
-| `/improve-resume` | Review and strengthen the master resume — tighten bullets, sharpen the summary, flag weak spots |
-| `/concerns` | Anticipate recruiter concerns with counter-framings |
+| `/assess` | Fit verdict, recruiter concerns, and Mnookin fit |
+| `/tailor-resume` | Tailor resume to a JD |
+| `/cover-letter` | Write a cover letter in the user's voice |
+| `/improve-resume` | Review and strengthen the master resume _(untested)_ |
 | `/notes` | Capture feedback or call notes |
 | `/update` | Log an event — interview, rejection, offer |
 | `/track` | View and manage the application pipeline |

@@ -7,10 +7,10 @@ set -euo pipefail
 # Fire a macOS notification on any failure
 trap 'osascript -e "display notification \"Feed failed — check run.log\" with title \"Job Feed\" subtitle \"$(date +%H:%M)\"" 2>/dev/null' ERR
 
-AGENT_DIR="/Users/anjali/Documents/Claude/agents/career-coach"
+AGENT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 LOG="$AGENT_DIR/feed-agent/run.log"
-CLAUDE="/Users/anjali/.local/bin/claude"
-PYTHON="/Users/anjali/Documents/Claude/agents/career-coach/feed-agent/.venv/bin/python3"
+CLAUDE="$(which claude)"
+PYTHON="$AGENT_DIR/feed-agent/.venv/bin/python3"
 
 cd "$AGENT_DIR"
 

@@ -45,7 +45,7 @@ If nothing is stale: "All applications within follow-up window."
 Pull all rejections since the last retro (or all-time if no prior retro). For each, note:
 
 - Role type (B2C / B2B / startup / enterprise / AI-heavy / fintech / other)
-- What you led with in the summary (AI builder / B2B ownership / HSBC scale / other)
+- What you led with in the summary (e.g. scale, domain expertise, cross-functional ownership)
 - Your fit verdict at time of application
 - Stage reached (application / screen / loop)
 
@@ -117,12 +117,28 @@ Output a clean view of what's actually live:
 
 ---
 
+### 5. Calibration Pruning
+
+Scan these stores for anything stale, redundant, or contradictory:
+
+- **Calibration Log** in `.claude/skills/assess/SKILL.md`
+- **`## Mnookin calibration`** in `context/profile.md` (skip if absent)
+- **`## Tailoring preferences`** and framing notes in `context/bank.md`
+
+Flag anything that looks like: two entries saying the same thing, an entry that real-world evidence has since disproved, or a one-off note that was too specific to be reusable.
+
+If anything stands out, name it and ask whether to remove or merge it. Only write changes with explicit confirmation.
+
+If everything looks clean: "Calibration stores look healthy — nothing to prune."
+
+---
+
 ## State Update
 
 After running `/retro`, add a session log entry to `context/state.md`:
 
 ```
-| [date] | Retro run. [N] stale, [N] rejections reviewed. Hypotheses: [one-line summary]. |
+| [date] | Retro run. [N] stale, [N] rejections reviewed. Hypotheses: [one-line summary]. Calibration: [N] entries pruned or "clean". |
 ```
 
 ---

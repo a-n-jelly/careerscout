@@ -30,10 +30,9 @@ Say:
 > | Command | What it does |
 > |---------|--------------|
 > | `/improve-resume` | Review and strengthen your master resume _(untested — use with caution)_ |
-> | `/assess` | Fit verdict and recruiter concerns for a role |
+> | `/assess` | Fit verdict, recruiter concerns, and Mnookin fit for a role |
 > | `/tailor-resume` | Tailor your resume bullets and summary to a JD |
 > | `/coverletter` | Write a cover letter in your voice |
-> | `/concerns` | Anticipate recruiter concerns with counter-framings |
 >
 > **Tracking**
 > | Command | What it does |

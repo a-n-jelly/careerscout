@@ -40,12 +40,10 @@ flowchart LR
 flowchart LR
     A[feed.md\nshortlist] -->|pick a role| B[/assess\nfit verdict + concerns]
     Z[paste a JD] --> B
-    B --> C[/tailor\nresume bullets]
-    C --> D[/coverletter\nin your voice]
+    B --> C[/tailor-resume\nresume bullets]
+    C --> D[/cover-letter\nin your voice]
     D --> E[apply]
     E --> F{outcome}
-    F -->|interview| G[/concerns\nprep + drill]
-    G --> H[/update\nlog the event]
     F -->|rejection| H
     F -->|offer| H
     H --> I[/track\npipeline view]
@@ -54,10 +52,9 @@ flowchart LR
 | Command | What it does |
 |---------|--------------|
 | `/improve-resume` | Review and strengthen your master resume _(untested — use with caution)_ |
-| `/assess` | Fit verdict and recruiter concerns ranked by severity |
-| `/tailor` | Tailor your resume to the JD |
-| `/coverletter` | Write a cover letter in your voice |
-| `/concerns` | Anticipate recruiter concerns with counter-framings |
+| `/assess` | Fit verdict, recruiter concerns, and Mnookin fit |
+| `/tailor-resume` | Tailor your resume to the JD |
+| `/cover-letter` | Write a cover letter in your voice |
 | `/notes` | Capture recruiter feedback or call notes |
 | `/update` | Log an event — interview, rejection, offer |
 | `/track` | View and manage your full pipeline |

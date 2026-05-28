@@ -98,14 +98,14 @@ Ask:
 **Group 6 — Mnookin doc (optional)**
 
 Use the AskUserQuestion tool:
-- "Do you have a Mnookin doc — a personal positioning brief that describes your background, what you're targeting, and how you differentiate yourself?" — Options: **Yes, I'll paste it** / **No, skip this**
+- "Do you have a Mnookin doc — a personal preferences doc that captures the kind of company, culture, and working environment you thrive in?" — Options: **Yes, I'll paste it** / **No, skip this**
 
 If yes: ask them to paste it. Once received:
-- Use it to refine the search queries drafted in Step 2 — the Mnookin doc often surfaces domain language, role types, or target signals that the resume alone doesn't reveal
-- Use it as primary input for Step 3b (differentiators) — it will be more accurate than resume inference alone
-- Save it to `context/profile.md` under a `## Mnookin Doc` section so it's available to future sessions
+- Save it to `context/profile.md` under a `## Mnookin Doc` section
+- Do not use it to change search queries or differentiators — it's about personal fit, not positioning
+- Explain: "This will be used by `/assess` to flag whether a company looks Mnookin-friendly — i.e. whether the role and company style match your preferences. It won't change what gets surfaced in the feed, but it'll add a fit signal when you're evaluating specific roles."
 
-If no: proceed without it. The feed will be built from resume inference alone and will improve over time with `/calibrate`.
+If no: proceed without it. Users can add it later by pasting into Claude Code and asking to save it to `context/profile.md`.
 
 ### Step 3b — Draft differentiators.md
 
