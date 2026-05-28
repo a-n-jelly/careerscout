@@ -1,3 +1,11 @@
+---
+name: cover-letter
+description: >-
+  Write a cover letter in the user's voice for a specific role. Use when the
+  user says /coverletter, asks for a cover letter, or wants a letter drafted
+  for a role they're applying to. Always invoke my-voice before drafting.
+---
+
 # /coverletter — Cover Letter Writing Protocol
 
 ---
@@ -25,7 +33,7 @@ If `/assess` hasn't been run for this role yet, run a quick internal assessment 
    - Closing: one sentence tied to the specific team or product
    - Sign-off: `Kind Regards, / [your name]` — pull from `context/bank.md` if set
 
-4. **Independent quality check before delivering.** Before outputting, assess: Does this read like a Staff PM or like someone justifying their application? Is every paragraph earning its place, or is anything filler? Cut anything that doesn't directly serve the letter's argument.
+4. **Independent quality check before delivering.** Before outputting, assess: Does this read like a senior practitioner or like someone justifying their application? Is every paragraph earning its place, or is anything filler? Cut anything that doesn't directly serve the letter's argument.
 
 ---
 
