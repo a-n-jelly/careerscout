@@ -156,15 +156,27 @@ To bring a role back: remove its ID from dismissed.json or use `/feed add`.
 
 ## Step 6 — Calibration nudge
 
-After writing feed/feed.md, always append the following — and always surface it
-prominently in the conversational response, not just in the file:
+Check how many archived feeds exist in `feed/archive/`. Count = number of prior runs.
 
+**Runs 1–4 (early):** The feed is still learning. End with a specific nudge in the conversational response:
+
+> "This is run [N] — the first few feeds usually have noise. After you've read through it, run `/feed-review` to work through the list, then `/calibrate` if anything felt systematically off. Things to watch for: roles in the wrong domain, level mismatches, companies you'd never consider, comp scores that don't match your expectations."
+
+Also append to feed.md:
 ```
 ---
-If any of these felt off, run `/calibrate` to tune the scoring, avoid list, or edge profile.
+Run [N] of your feed. Run `/feed-review` to work through the list — then `/calibrate` if you spot patterns worth fixing (wrong domain, level mismatches, companies to exclude).
 ```
 
-In the conversational response, end with: "Run `/calibrate` if any of these felt off."
+**Run 5+ (mature):** End with the standard nudge:
+
+> "Run `/feed-review` to work through the list. Run `/calibrate` if something felt off."
+
+Also append to feed.md:
+```
+---
+Run `/feed-review` to work through the list. Run `/calibrate` if something felt systematically off.
+```
 
 ---
 

@@ -37,7 +37,28 @@ Build an in-memory lookup from today.json: `id → {description, url}`. Used in 
 
 ---
 
-## Step 2 — Ask which mode
+## Step 2 — Detect run count and set mode
+
+Check how many archived feeds exist in `feed/archive/`. Count = number of prior runs.
+
+**Runs 1–4 (early — guided mode):**
+
+Don't ask which mode. Instead, orient the user first:
+
+> "This is one of your early feeds — let me show you what I can tune before we dig in.
+>
+> **What calibration can fix:**
+> - Roles in the wrong domain appearing (→ adds to avoid list)
+> - Level mismatches — too many above-target or below-target roles (→ adjusts level config)
+> - Companies you'd never apply to keep surfacing (→ company-level rejection rule)
+> - Scores that don't feel right — edge too high, comp scoring off (→ differentiators or comp band)
+> - A company you want to watch that isn't appearing (→ adds to priority list)
+>
+> Let's go role by role through the recommended list. For each one, tell me if it felt right or what was off."
+
+Then proceed role by role (Step 3, role-by-role mode). After all roles, ask: "Anything systematic you noticed across the whole feed?"
+
+**Run 5+ (mature — standard mode):**
 
 > "Looking at the last feed ([N] recommended, [M] skipped — [date]). Want to go
 > role by role through the recommended list, or give me your overall read first?"
