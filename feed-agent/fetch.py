@@ -3,7 +3,7 @@
 feed-agent/fetch.py — Daily job fetch engine
 
 Reads sources.md → runs JobSpy → hits ATS endpoints → dedupes → writes today.json
-Run from job-agent/ root: python3 feed-agent/fetch.py
+Run from career-coach/ root: python3 feed-agent/fetch.py
 """
 
 import json
@@ -28,43 +28,107 @@ except ImportError:
     print("ERROR: python-jobspy not installed. Run: pip install python-jobspy")
     sys.exit(1)
 
-BASE = Path(__file__).parent.parent          # job-agent/
-FEED_AGENT = Path(__file__).parent           # job-agent/feed-agent/
-SOURCES = BASE / "context" / "sources.md"
-LEARNINGS = FEED_AGENT / "learnings.md"
-SEEN_JSON = FEED_AGENT / "seen.json"
+BASE       = Path(__file__).parent.parent   # career-coach/
+FEED_AGENT = Path(__file__).parent          # career-coach/feed-agent/
+SOURCES      = BASE / "context" / "sources.md"
+LEARNINGS    = FEED_AGENT / "learnings.md"
+SEEN_JSON    = FEED_AGENT / "seen.json"
 DISMISSED_JSON = FEED_AGENT / "dismissed.json"
-TODAY_JSON = FEED_AGENT / "today.json"
+TODAY_JSON   = FEED_AGENT / "today.json"
+
+STAFFING_AGENCIES = {
+    "akkodis", "spectraforce", "impax recruitment", "hays", "robert half",
+    "kforce", "insight global", "teksystems", "cybercoders", "hired",
+    "jobgether", "lancesoft", "staffmark", "apex systems",
+}
 
 
 # ── Parsers ──────────────────────────────────────────────────────────────────
 
 def parse_sources():
     text = SOURCES.read_text()
-    queries, avoid, target_companies, ats_map = [], [], [], {}
-
     section = None
+
+    queries        = []
+    avoid_rules    = []   # list of {"logic": "any"|"all", "keywords": [...]}
+    target_companies = []
+    ats_map        = {}
+    title_keywords = ["product manager", "pm"]   # defaults
+    level_config   = {
+        "target":       ["senior", "sr", "staff", "lead", "principal"],
+        "above_target": ["director", "vp", "head of", "vice president", "chief"],
+        "below_target": ["associate", "junior", "jr", "entry level", "pm i", "pm1"],
+    }
+    location_config = {
+        "primary":      "",
+        "accept_remote": True,
+        "reject_cities": [],
+    }
+    feed_settings = {"results_wanted": 15, "hours_old": 72}
+
     for line in text.splitlines():
         stripped = line.strip()
+
         if stripped.startswith("## "):
-            section = stripped[3:].lower()
+            section = stripped[3:].lower().strip()
             continue
 
+        # Search queries
         if section == "search queries (run these)" and re.match(r"^\d+\.", stripped):
-            q = re.sub(r"^\d+\.\s*", "", stripped)
+            q = re.sub(r"^\d+\.\s*", "", stripped).strip()
             if q:
                 queries.append(q)
 
-        elif section == "avoid" and stripped.startswith("-"):
-            avoid.append(stripped.lstrip("- ").lower())
+        # Feed settings
+        elif section == "feed settings":
+            m = re.match(r"results_wanted:\s*(\d+)", stripped)
+            if m:
+                feed_settings["results_wanted"] = int(m.group(1))
+            m = re.match(r"hours_old:\s*(\d+)", stripped)
+            if m:
+                feed_settings["hours_old"] = int(m.group(1))
 
-        elif section == "priority companies" and stripped and not stripped.startswith("#"):
-            for c in re.split(r",\s*", stripped):
-                c = c.strip()
-                # Skip prose lines — company names don't contain spaces beyond "Cash App"
-                if c and len(c.split()) <= 2 and not c.startswith("Roles"):
-                    target_companies.append(c)
+        # Target titles
+        elif section == "target titles" and stripped.startswith("-"):
+            kw = stripped.lstrip("- ").strip().lower()
+            if kw:
+                title_keywords.append(kw)
 
+        # Target level
+        elif section == "target level" and stripped.startswith("**"):
+            m = re.match(r"\*\*(.*?)\*\*[:\s]+(.*)", stripped)
+            if m:
+                label = m.group(1).lower().strip()
+                keywords = [k.strip().lower() for k in m.group(2).split(",")]
+                if "above" in label:
+                    level_config["above_target"] = keywords
+                elif "below" in label:
+                    level_config["below_target"] = keywords
+                elif "target" in label:
+                    level_config["target"] = keywords
+
+        # Location
+        elif section == "location":
+            m = re.match(r"\*\*primary city\*\*[:\s]+(.*)", stripped, re.IGNORECASE)
+            if m:
+                location_config["primary"] = m.group(1).strip()
+            m = re.match(r"\*\*accept remote\*\*[:\s]+(.*)", stripped, re.IGNORECASE)
+            if m:
+                location_config["accept_remote"] = "yes" in m.group(1).lower()
+            m = re.match(r"\*\*reject if clearly located in\*\*[:\s]+(.*)", stripped, re.IGNORECASE)
+            if m:
+                cities = [c.strip().lower() for c in m.group(1).split(",") if c.strip()]
+                location_config["reject_cities"] = cities
+
+        # Priority companies
+        elif section == "priority companies" and "|" in stripped:
+            if stripped.startswith("|-") or "company" in stripped.lower():
+                continue
+            parts = [p.strip() for p in stripped.split("|") if p.strip()]
+            if parts:
+                target_companies.append(parts[0])
+
+        # ATS endpoints
         elif section == "ats endpoints" and "|" in stripped:
             if stripped.startswith("|-") or "company" in stripped.lower():
                 continue
@@ -72,11 +136,29 @@ def parse_sources():
             if len(parts) >= 3:
                 ats_map[parts[0]] = {"type": parts[1].lower(), "slug": parts[2]}
 
+        # What to avoid
+        elif section == "what to avoid" and stripped.startswith("-"):
+            rule = stripped.lstrip("- ").strip().lower()
+            if not rule or rule.startswith("["):
+                continue
+            if rule.startswith("and:"):
+                keywords = rule[4:].strip().split()
+                avoid_rules.append({"logic": "all", "keywords": keywords})
+            else:
+                avoid_rules.append({"logic": "any", "keywords": [rule]})
+
+    # Dedupe title_keywords
+    title_keywords = list(dict.fromkeys(title_keywords))
+
     return {
-        "queries": queries,
-        "avoid": avoid,
+        "queries":          queries,
+        "avoid_rules":      avoid_rules,
         "target_companies": target_companies,
-        "ats": ats_map,
+        "ats":              ats_map,
+        "title_keywords":   title_keywords,
+        "level_config":     level_config,
+        "location_config":  location_config,
+        "feed_settings":    feed_settings,
     }
 
 
@@ -122,68 +204,123 @@ def load_dismissed():
     return json.loads(DISMISSED_JSON.read_text())
 
 
-# ── Fetch ─────────────────────────────────────────────────────────────────────
+# ── Filters ───────────────────────────────────────────────────────────────────
 
-SEATTLE_STATES = {"wa", "washington", "seattle"}
-VALID_REMOTE_INDICATORS = {"remote", "united states", "us", "usa", "anywhere"}
 PLACEHOLDER_LOCATIONS = {"add all locations here", "add location here", "tbd", "various"}
 
 
-def location_acceptable(job_location: str, query_type: str) -> bool:
-    """Return False if the role's location clearly doesn't match the query type."""
+def location_acceptable(job_location: str, location_config: dict) -> bool:
     loc = (job_location or "").lower()
     if not loc or loc in ("nan", "none", ""):
-        return True  # No location data — let the scorer handle via Sustain 0
+        return True  # No location data — let scorer handle via Sustain 0
     if any(p in loc for p in PLACEHOLDER_LOCATIONS):
-        return True  # Placeholder location — Sustain 0 at scoring stage
+        return True  # Placeholder — Sustain 0 at scoring
 
-    if query_type == "seattle":
-        # Must contain Seattle or WA, or be remote
-        return any(s in loc for s in SEATTLE_STATES) or any(r in loc for r in VALID_REMOTE_INDICATORS)
+    primary = location_config.get("primary", "").lower()
+    accept_remote = location_config.get("accept_remote", True)
+    reject_cities = location_config.get("reject_cities", [])
 
-    if query_type == "remote":
-        # Must not be a specific non-Seattle city
-        # Reject if it contains a known non-Seattle city indicator
-        reject_locations = ["cleveland", "new york", "ny,", " ny ", "chicago",
-                            "boston", "austin", "dallas", "atlanta", "denver",
-                            "white plains", "charlotte", "phoenix", "miami"]
-        return not any(r in loc for r in reject_locations)
+    # Check primary city match
+    if primary:
+        primary_words = [w for w in primary.replace(",", " ").split() if len(w) > 1]
+        if any(w in loc for w in primary_words):
+            return True
+
+    # Check remote indicators
+    remote_indicators = {"remote", "united states", "us", "usa", "anywhere"}
+    if accept_remote and any(r in loc for r in remote_indicators):
+        # Exclude explicitly rejected cities
+        if reject_cities and any(city in loc for city in reject_cities):
+            return False
+        return True
+
+    # If we have a primary city and nothing matched, reject
+    if primary:
+        return False
 
     return True
 
 
-def run_jobspy(query):
+def is_target_title(title: str, title_keywords: list) -> bool:
+    title_lower = title.lower()
+    return any(kw in title_lower for kw in title_keywords)
+
+
+def classify_level(title: str, level_config: dict) -> str:
+    title_lower = title.lower()
+    for kw in level_config.get("above_target", []):
+        if kw in title_lower:
+            return "above_target"
+    for kw in level_config.get("below_target", []):
+        if kw in title_lower:
+            return "below_target"
+    return "target"
+
+
+def should_avoid(job: dict, avoid_rules: list) -> tuple:
+    text = f"{job['title']} {job.get('description', '')}".lower()
+
+    for rule in avoid_rules:
+        keywords = rule["keywords"]
+        logic = rule["logic"]
+        if logic == "any" and any(k in text for k in keywords):
+            return True, " ".join(keywords)
+        if logic == "all" and all(k in text for k in keywords):
+            return True, " ".join(keywords)
+
+    # Always filter staffing agencies regardless of sources.md
+    company_lower = job.get("company", "").lower()
+    if any(agency in company_lower for agency in STAFFING_AGENCIES):
+        return True, "staffing-agency"
+
+    return False, None
+
+
+def matches_rejected(job, rejected):
+    text = f"{job['title']} {job['company']} {job.get('description', '')}".lower()
+    for pattern in rejected:
+        words = [w for w in pattern.split()[:4] if len(w) > 3]
+        if words and all(w in text for w in words):
+            return True
+    return False
+
+
+# ── Fetch ─────────────────────────────────────────────────────────────────────
+
+def run_jobspy(query, location_config, feed_settings):
+    primary = location_config.get("primary", "")
     q_lower = query.lower()
-    if "seattle" in q_lower:
-        location = "Seattle, WA"
-        query_type = "seattle"
+
+    # Infer search location from query or primary city config
+    if primary and any(w in q_lower for w in primary.lower().split()):
+        location = primary
     elif "remote" in q_lower:
         location = "United States"
-        query_type = "remote"
+    elif primary:
+        location = primary
     else:
         location = "United States"
-        query_type = "remote"
 
     try:
         jobs = scrape_jobs(
             site_name=["linkedin", "indeed", "glassdoor", "zip_recruiter", "google"],
             search_term=query,
             location=location,
-            results_wanted=15,
-            hours_old=72,
+            results_wanted=feed_settings.get("results_wanted", 15),
+            hours_old=feed_settings.get("hours_old", 72),
         )
         results = []
         for _, row in jobs.iterrows():
             job_loc = str(row.get("location", "") or "")
-            if not location_acceptable(job_loc, query_type):
+            if not location_acceptable(job_loc, location_config):
                 continue
             results.append({
-                "title": str(row.get("title", "") or ""),
-                "company": str(row.get("company", "") or ""),
-                "location": job_loc,
-                "url": str(row.get("job_url", "") or ""),
-                "description": str(row.get("description", "") or "")[:1000],
-                "source": str(row.get("site", "") or ""),
+                "title":       str(row.get("title", "") or ""),
+                "company":     str(row.get("company", "") or ""),
+                "location":    job_loc,
+                "url":         str(row.get("job_url", "") or ""),
+                "description": str(row.get("description", "") or "")[:3000],
+                "source":      str(row.get("site", "") or ""),
                 "date_posted": str(row.get("date_posted", "") or ""),
             })
         return results
@@ -207,137 +344,45 @@ def fetch_ats(company, ats_info):
 
     try:
         if ats_type == "greenhouse":
-            url = f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs"
-            data = fetch_url(url)
-            return [
-                {
-                    "title": j.get("title", ""),
-                    "company": company,
-                    "location": j.get("location", {}).get("name", ""),
-                    "url": j.get("absolute_url", ""),
-                    "description": "",
-                    "source": "greenhouse",
-                    "date_posted": (j.get("updated_at", "") or "")[:10],
-                }
-                for j in data.get("jobs", [])
-            ]
+            data = fetch_url(f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs")
+            return [{
+                "title":       j.get("title", ""),
+                "company":     company,
+                "location":    j.get("location", {}).get("name", ""),
+                "url":         j.get("absolute_url", ""),
+                "description": "",
+                "source":      "greenhouse",
+                "date_posted": (j.get("updated_at", "") or "")[:10],
+            } for j in data.get("jobs", [])]
 
         elif ats_type == "lever":
-            url = f"https://api.lever.co/v0/postings/{slug}"
-            data = fetch_url(url)
-            return [
-                {
-                    "title": j.get("text", ""),
-                    "company": company,
-                    "location": j.get("categories", {}).get("location", ""),
-                    "url": j.get("hostedUrl", ""),
-                    "description": "",
-                    "source": "lever",
-                    "date_posted": "",
-                }
-                for j in data
-            ]
+            data = fetch_url(f"https://api.lever.co/v0/postings/{slug}")
+            return [{
+                "title":       j.get("text", ""),
+                "company":     company,
+                "location":    j.get("categories", {}).get("location", ""),
+                "url":         j.get("hostedUrl", ""),
+                "description": "",
+                "source":      "lever",
+                "date_posted": "",
+            } for j in data]
 
         elif ats_type == "ashby":
-            url = f"https://api.ashbyhq.com/posting-api/job-board/{slug}"
-            data = fetch_url(url)
-            return [
-                {
-                    "title": j.get("title", ""),
-                    "company": company,
-                    "location": j.get("locationName", ""),
-                    "url": j.get("jobPostingUrl", ""),
-                    "description": "",
-                    "source": "ashby",
-                    "date_posted": (j.get("publishedDate", "") or "")[:10],
-                }
-                for j in data.get("jobPostings", [])
-            ]
+            data = fetch_url(f"https://api.ashbyhq.com/posting-api/job-board/{slug}")
+            return [{
+                "title":       j.get("title", ""),
+                "company":     company,
+                "location":    j.get("locationName", ""),
+                "url":         j.get("jobPostingUrl", ""),
+                "description": "",
+                "source":      "ashby",
+                "date_posted": (j.get("publishedDate", "") or "")[:10],
+            } for j in data.get("jobPostings", [])]
 
     except (urllib.error.URLError, json.JSONDecodeError, Exception) as e:
         print(f"    ATS error for {company}: {e}")
 
     return []
-
-
-# ── Filters ───────────────────────────────────────────────────────────────────
-
-_PM_RE = re.compile(r'\b(product\s+manager|sr\.?\s*pm|senior\s+pm)\b', re.IGNORECASE)
-_SENIOR_RE = re.compile(r'\b(senior|sr\.?|staff|principal|lead)\b', re.IGNORECASE)
-_ABOVE_VP_RE = re.compile(r'\b(director|vp\b|vice\s+president|head\s+of|chief|executive|president)\b', re.IGNORECASE)
-_JUNIOR_RE = re.compile(r'\b(associate|entry.level|junior|jr\.?)\b', re.IGNORECASE)
-
-
-def is_senior_pm(title):
-    if not _PM_RE.search(title):
-        return False
-    if not _SENIOR_RE.search(title):
-        return False
-    if _ABOVE_VP_RE.search(title):
-        return False
-    if _JUNIOR_RE.search(title):
-        return False
-    return True
-
-
-_ABOVE_TARGET_RE = re.compile(
-    r'\b(principal|staff|director|vp\b|vice\s+president|head\s+of|chief)\b', re.IGNORECASE
-)
-_BELOW_TARGET_RE = re.compile(
-    r'\b(associate|junior|jr\.?|entry.level|\bpm\s+i\b|\bpm1\b)\b', re.IGNORECASE
-)
-
-
-def classify_level(title):
-    """Returns 'above_target', 'below_target', or 'target'."""
-    if _ABOVE_TARGET_RE.search(title):
-        return "above_target"
-    if _BELOW_TARGET_RE.search(title):
-        return "below_target"
-    return "target"
-
-
-# (logic, keywords, reason): "any" = OR match, "all" = AND match
-AVOID_RULES = [
-    ("any", ["supply chain", "supplier enablement", "logistics", "healthcare",
-             "edtech", "ed tech", "clinical", "medical", "retail ops"], "out-of-domain"),
-    ("all", ["platform", "infrastructure"], "platform-infra"),
-    ("any", ["growth pm", "growth product manager"], "growth-pm"),
-    ("all", ["enterprise", "b2b"], "enterprise-saas"),
-    ("any", ["visa sponsorship", "work authorization required", "sponsorship required"], "sponsorship"),
-]
-
-# Staffing agencies and recruiters — never direct hires
-STAFFING_AGENCIES = {
-    "akkodis", "spectraforce", "impax recruitment", "hays", "robert half",
-    "kforce", "insight global", "teksystems", "cybercoders", "hired",
-    "jobgether", "lancesoft", "staffmark", "apex systems",
-}
-
-
-def should_avoid(job):
-    text = f"{job['title']} {job['description']}".lower()
-    for logic, keywords, reason in AVOID_RULES:
-        if logic == "any" and any(k in text for k in keywords):
-            return True, reason
-        if logic == "all" and all(k in text for k in keywords):
-            return True, reason
-
-    # Filter staffing agencies
-    company_lower = job.get("company", "").lower()
-    if any(agency in company_lower for agency in STAFFING_AGENCIES):
-        return True, "staffing-agency"
-
-    return False, None
-
-
-def matches_rejected(job, rejected):
-    text = f"{job['title']} {job['company']} {job['description']}".lower()
-    for pattern in rejected:
-        words = [w for w in pattern.split()[:4] if len(w) > 3]
-        if words and all(w in text for w in words):
-            return True
-    return False
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
@@ -347,26 +392,31 @@ def main():
     print(f"Job Feed Fetch — {today}")
     print("=" * 40)
 
-    sources = parse_sources()
+    sources   = parse_sources()
     learnings = parse_learnings()
-    seen = load_seen()
+    seen      = load_seen()
     dismissed = load_dismissed()
 
+    location_config = sources["location_config"]
+    level_config    = sources["level_config"]
+    title_keywords  = sources["title_keywords"]
+    avoid_rules     = sources["avoid_rules"]
+    feed_settings   = sources["feed_settings"]
+
     print(f"Queries: {len(sources['queries'])}  |  Target companies: {len(sources['target_companies'])}")
-    print(f"ATS endpoints: {len(sources['ats'])}  |  Rejected patterns: {len(learnings['rejected'])}")
-    print(f"Dismissed (seen in feed): {len(dismissed)}")
+    print(f"ATS endpoints: {len(sources['ats'])}  |  Avoid rules: {len(avoid_rules)}")
+    print(f"Rejected patterns: {len(learnings['rejected'])}  |  Dismissed: {len(dismissed)}")
+    print(f"Location: {location_config.get('primary') or 'not set'}  |  Remote: {location_config.get('accept_remote')}")
 
     raw = []
 
-    # JobSpy searches
     print("\nJobSpy searches:")
     for q in sources["queries"]:
         print(f"  → {q[:70]}")
-        results = run_jobspy(q)
+        results = run_jobspy(q, location_config, feed_settings)
         print(f"     {len(results)} raw")
         raw.extend(results)
 
-    # ATS endpoint fetches
     if sources["ats"]:
         print("\nATS endpoints:")
         for company, info in sources["ats"].items():
@@ -377,8 +427,7 @@ def main():
 
     print(f"\nTotal raw: {len(raw)}")
 
-    # Description-aware dedup: for same title+company across sources,
-    # keep the entry with the longest description (prefer LinkedIn/Indeed over ATS)
+    # Description-aware dedup: same title+company → keep entry with longest description
     best_by_role: dict = {}
     for job in raw:
         key = f"{job.get('title', '').lower().strip()}|{job.get('company', '').lower().strip()}"
@@ -389,9 +438,9 @@ def main():
     print(f"After description-aware dedup: {len(raw)}")
 
     # Filter + dedup
-    filtered = []
-    seen_ids = set()
-    stats = {"not_pm": 0, "avoided": 0, "rejected": 0, "dupes": 0, "reposts": 0}
+    filtered  = []
+    seen_ids  = set()
+    stats     = {"not_pm": 0, "avoided": 0, "rejected": 0, "dupes": 0, "reposts": 0, "below_level": 0}
     target_set = {c.lower() for c in sources["target_companies"]}
 
     for job in raw:
@@ -400,18 +449,23 @@ def main():
 
         h = job_hash(job["title"], job["company"], job.get("url", ""))
 
-        # Within-run dedupe
         if h in seen_ids:
             stats["dupes"] += 1
             continue
         seen_ids.add(h)
 
-        # Level/domain filter
-        if not is_senior_pm(job["title"]):
+        # Title filter
+        if not is_target_title(job["title"], title_keywords):
             stats["not_pm"] += 1
             continue
 
-        avoided, _ = should_avoid(job)
+        # Level filter — skip below target
+        level = classify_level(job["title"], level_config)
+        if level == "below_target":
+            stats["below_level"] += 1
+            continue
+
+        avoided, _ = should_avoid(job, avoid_rules)
         if avoided:
             stats["avoided"] += 1
             continue
@@ -420,7 +474,6 @@ def main():
             stats["rejected"] += 1
             continue
 
-        # Skip roles the user has already seen in the feed
         if h in dismissed:
             stats["reposts"] += 1
             continue
@@ -436,12 +489,12 @@ def main():
 
         filtered.append({
             **job,
-            "id": h,
-            "repost": repost,
-            "is_target": is_target,
-            "level": classify_level(job["title"]),
+            "id":           h,
+            "repost":       repost,
+            "is_target":    is_target,
+            "level":        level,
             "fetched_date": today,
-            "injected": False,
+            "injected":     False,
         })
 
         if not repost:
@@ -449,7 +502,6 @@ def main():
 
     # Injected roles from learnings
     for entry in learnings["injected"]:
-        # Format: [date] Company — Role — reason
         parts = [p.strip() for p in entry.split("—")]
         if len(parts) >= 2:
             company_part = parts[0].split()[-1] if parts[0].split() else ""
@@ -457,25 +509,19 @@ def main():
             if company_part and role:
                 h = job_hash(role, company_part)
                 filtered.append({
-                    "title": role,
-                    "company": company_part,
-                    "location": "",
-                    "url": "",
-                    "description": "",
-                    "source": "manual",
-                    "date_posted": "",
-                    "id": h,
-                    "repost": False,
-                    "is_target": True,
-                    "fetched_date": today,
-                    "injected": True,
+                    "title": role, "company": company_part, "location": "",
+                    "url": "", "description": "", "source": "manual",
+                    "date_posted": "", "id": h, "repost": False,
+                    "is_target": True, "level": "target",
+                    "fetched_date": today, "injected": True,
                 })
 
     TODAY_JSON.write_text(json.dumps(filtered, indent=2))
     save_seen(seen)
 
     print(f"\nFilter stats:")
-    print(f"  Not a senior PM title : {stats['not_pm']}")
+    print(f"  Not a target title    : {stats['not_pm']}")
+    print(f"  Below target level    : {stats['below_level']}")
     print(f"  Avoided (criteria)    : {stats['avoided']}")
     print(f"  Rejected (learnings)  : {stats['rejected']}")
     print(f"  Dupes (within run)    : {stats['dupes']}")
