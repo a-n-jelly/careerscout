@@ -2,7 +2,7 @@
 
 # Profile & Off-Resume Context
 
-This file contains the context behind your resume — positioning, real detail per role, interview stories, gaps, and tailoring notes. Use alongside `resume.md` when writing or adapting bullets.
+This file contains the context behind your resume — positioning, real detail per role, interview stories, gaps, and tailoring notes. Use alongside `resume.md` when writing or adapting bullets. This is your candidate market fit
 
 Do NOT ask to re-explain anything covered here. Update as new context is gathered.
 
