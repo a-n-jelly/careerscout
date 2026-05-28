@@ -43,7 +43,7 @@ Read `context/differentiators.md` before scoring. Edge scoring uses it directly.
 
 Score each role on four dimensions (0–3 each). Total 0–12.
 
-- **Match (0–3)** — is this the right domain? Consumer-facing fintech, payments, lending, regulated environment. Score on role signals only, not company name.
+- **Match (0–3)** — read `## Domain Preferences` in `context/sources.md`. Proven = 3. Adjacent = 2. Curious = 1. Hard no = 0 (also skip immediately — treat as avoid list). If the role's domain isn't explicitly listed, use judgment based on which category it most closely resembles. Score on role type, not company name or industry label.
 
 - **Requirements (0–3)** — does the candidate meet the stated requirements? Pure domain and skills judgment — level is handled by the thresholds below, do not double-penalise it here. 3 = meets core requirements. 2 = minor gap, mostly qualified. 1 = clear domain gap. 0 = disqualifying requirement they don't have.
 

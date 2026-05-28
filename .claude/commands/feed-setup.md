@@ -33,11 +33,18 @@ Also draft **5–8 search queries** directly from these inferences. Queries shou
 - "Senior PM payments remote"
 - "Senior Product Manager consumer lending Seattle"
 
+Also draft a **Domain Preferences** section with four buckets inferred from the resume:
+
+- **Proven**: industries and product types the resume demonstrates clearly — where they'll clear screening
+- **Adjacent**: industries where their skills plausibly transfer but the resume doesn't prove it yet
+- **Curious**: leave blank — you can't infer interest from a resume. Ask the user to fill this in.
+- **Hard no**: leave blank — ask the user.
+
 Show the draft to the user. Say:
 
-> "Here's what I pulled from your resume — including a first set of search queries for the feed. Read through and tell me if anything's wrong before we fill in the rest."
+> "Here's what I pulled from your resume — including a first set of search queries and a domain map for scoring. The Proven and Adjacent buckets are inferred from your background. Two quick questions before we continue: anything in the Curious column — domains you'd explore even without a track record? And any hard no's — things you'd never consider regardless of comp or company?"
 
-Wait for confirmation or corrections. Apply any changes. The user can add, remove, or reword queries freely.
+Wait for their answers. Apply to the Domain Preferences draft. The user can add, remove, or move items between buckets freely.
 
 ### Step 3 — Fill in the gaps with structured questions
 
@@ -83,7 +90,7 @@ Ask:
 
 Then ask two free-text follow-ups (separately, not bundled):
 1. "Any specific companies you want to watch directly? List them and I'll add them to your priority list."
-2. "Any deal-breakers — role types, domains, or company types to exclude entirely?"
+2. "Any deal-breakers — role types, domains, or company types to exclude entirely?" Add these to the Hard no bucket in Domain Preferences and to the What to Avoid section.
 
 ---
 
@@ -225,6 +232,24 @@ hours_old: [from Q16]
 
 | Company | Type | Slug |
 |---------|------|------|
+
+---
+
+## Domain Preferences
+
+[From resume inference + user answers in Step 2 — defines the Match dimension. Feed maps these to scores internally.]
+
+**Proven** — domains the resume positions them strongly in:
+- [inferred from resume]
+
+**Adjacent** — skills transfer, less proven:
+- [inferred from resume]
+
+**Curious** — open to exploring, no strong background:
+- [from user input — leave blank if none provided]
+
+**Hard no** — never, regardless of comp or company:
+- [from user input — leave blank if none provided]
 
 ---
 
