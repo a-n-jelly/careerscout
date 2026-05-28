@@ -33,6 +33,7 @@ FEED_AGENT = Path(__file__).parent           # job-agent/feed-agent/
 SOURCES = BASE / "context" / "sources.md"
 LEARNINGS = FEED_AGENT / "learnings.md"
 SEEN_JSON = FEED_AGENT / "seen.json"
+DISMISSED_JSON = FEED_AGENT / "dismissed.json"
 TODAY_JSON = FEED_AGENT / "today.json"
 
 
@@ -57,10 +58,11 @@ def parse_sources():
         elif section == "avoid" and stripped.startswith("-"):
             avoid.append(stripped.lstrip("- ").lower())
 
-        elif section == "target companies" and stripped and not stripped.startswith("#"):
+        elif section == "priority companies" and stripped and not stripped.startswith("#"):
             for c in re.split(r",\s*", stripped):
                 c = c.strip()
-                if c:
+                # Skip prose lines — company names don't contain spaces beyond "Cash App"
+                if c and len(c.split()) <= 2 and not c.startswith("Roles"):
                     target_companies.append(c)
 
         elif section == "ats endpoints" and "|" in stripped:
@@ -114,31 +116,71 @@ def save_seen(seen):
     SEEN_JSON.write_text(json.dumps(seen, indent=2))
 
 
+def load_dismissed():
+    if not DISMISSED_JSON.exists():
+        return {}
+    return json.loads(DISMISSED_JSON.read_text())
+
+
 # ── Fetch ─────────────────────────────────────────────────────────────────────
+
+SEATTLE_STATES = {"wa", "washington", "seattle"}
+VALID_REMOTE_INDICATORS = {"remote", "united states", "us", "usa", "anywhere"}
+PLACEHOLDER_LOCATIONS = {"add all locations here", "add location here", "tbd", "various"}
+
+
+def location_acceptable(job_location: str, query_type: str) -> bool:
+    """Return False if the role's location clearly doesn't match the query type."""
+    loc = (job_location or "").lower()
+    if not loc or loc in ("nan", "none", ""):
+        return True  # No location data — let the scorer handle via Sustain 0
+    if any(p in loc for p in PLACEHOLDER_LOCATIONS):
+        return True  # Placeholder location — Sustain 0 at scoring stage
+
+    if query_type == "seattle":
+        # Must contain Seattle or WA, or be remote
+        return any(s in loc for s in SEATTLE_STATES) or any(r in loc for r in VALID_REMOTE_INDICATORS)
+
+    if query_type == "remote":
+        # Must not be a specific non-Seattle city
+        # Reject if it contains a known non-Seattle city indicator
+        reject_locations = ["cleveland", "new york", "ny,", " ny ", "chicago",
+                            "boston", "austin", "dallas", "atlanta", "denver",
+                            "white plains", "charlotte", "phoenix", "miami"]
+        return not any(r in loc for r in reject_locations)
+
+    return True
+
 
 def run_jobspy(query):
     q_lower = query.lower()
     if "seattle" in q_lower:
         location = "Seattle, WA"
+        query_type = "seattle"
     elif "remote" in q_lower:
         location = "United States"
+        query_type = "remote"
     else:
         location = "United States"
+        query_type = "remote"
 
     try:
         jobs = scrape_jobs(
             site_name=["linkedin", "indeed", "glassdoor", "zip_recruiter", "google"],
             search_term=query,
             location=location,
-            results_wanted=10,
+            results_wanted=15,
             hours_old=72,
         )
         results = []
         for _, row in jobs.iterrows():
+            job_loc = str(row.get("location", "") or "")
+            if not location_acceptable(job_loc, query_type):
+                continue
             results.append({
                 "title": str(row.get("title", "") or ""),
                 "company": str(row.get("company", "") or ""),
-                "location": str(row.get("location", "") or ""),
+                "location": job_loc,
                 "url": str(row.get("job_url", "") or ""),
                 "description": str(row.get("description", "") or "")[:1000],
                 "source": str(row.get("site", "") or ""),
@@ -238,6 +280,23 @@ def is_senior_pm(title):
     return True
 
 
+_ABOVE_TARGET_RE = re.compile(
+    r'\b(principal|staff|director|vp\b|vice\s+president|head\s+of|chief)\b', re.IGNORECASE
+)
+_BELOW_TARGET_RE = re.compile(
+    r'\b(associate|junior|jr\.?|entry.level|\bpm\s+i\b|\bpm1\b)\b', re.IGNORECASE
+)
+
+
+def classify_level(title):
+    """Returns 'above_target', 'below_target', or 'target'."""
+    if _ABOVE_TARGET_RE.search(title):
+        return "above_target"
+    if _BELOW_TARGET_RE.search(title):
+        return "below_target"
+    return "target"
+
+
 # (logic, keywords, reason): "any" = OR match, "all" = AND match
 AVOID_RULES = [
     ("any", ["supply chain", "supplier enablement", "logistics", "healthcare",
@@ -248,6 +307,13 @@ AVOID_RULES = [
     ("any", ["visa sponsorship", "work authorization required", "sponsorship required"], "sponsorship"),
 ]
 
+# Staffing agencies and recruiters — never direct hires
+STAFFING_AGENCIES = {
+    "akkodis", "spectraforce", "impax recruitment", "hays", "robert half",
+    "kforce", "insight global", "teksystems", "cybercoders", "hired",
+    "jobgether", "lancesoft", "staffmark", "apex systems",
+}
+
 
 def should_avoid(job):
     text = f"{job['title']} {job['description']}".lower()
@@ -256,6 +322,12 @@ def should_avoid(job):
             return True, reason
         if logic == "all" and all(k in text for k in keywords):
             return True, reason
+
+    # Filter staffing agencies
+    company_lower = job.get("company", "").lower()
+    if any(agency in company_lower for agency in STAFFING_AGENCIES):
+        return True, "staffing-agency"
+
     return False, None
 
 
@@ -278,9 +350,11 @@ def main():
     sources = parse_sources()
     learnings = parse_learnings()
     seen = load_seen()
+    dismissed = load_dismissed()
 
     print(f"Queries: {len(sources['queries'])}  |  Target companies: {len(sources['target_companies'])}")
     print(f"ATS endpoints: {len(sources['ats'])}  |  Rejected patterns: {len(learnings['rejected'])}")
+    print(f"Dismissed (seen in feed): {len(dismissed)}")
 
     raw = []
 
@@ -302,6 +376,17 @@ def main():
             raw.extend(results)
 
     print(f"\nTotal raw: {len(raw)}")
+
+    # Description-aware dedup: for same title+company across sources,
+    # keep the entry with the longest description (prefer LinkedIn/Indeed over ATS)
+    best_by_role: dict = {}
+    for job in raw:
+        key = f"{job.get('title', '').lower().strip()}|{job.get('company', '').lower().strip()}"
+        existing = best_by_role.get(key)
+        if not existing or len(job.get("description", "") or "") > len(existing.get("description", "") or ""):
+            best_by_role[key] = job
+    raw = list(best_by_role.values())
+    print(f"After description-aware dedup: {len(raw)}")
 
     # Filter + dedup
     filtered = []
@@ -335,6 +420,11 @@ def main():
             stats["rejected"] += 1
             continue
 
+        # Skip roles the user has already seen in the feed
+        if h in dismissed:
+            stats["reposts"] += 1
+            continue
+
         repost = h in seen
         if repost:
             stats["reposts"] += 1
@@ -349,6 +439,7 @@ def main():
             "id": h,
             "repost": repost,
             "is_target": is_target,
+            "level": classify_level(job["title"]),
             "fetched_date": today,
             "injected": False,
         })

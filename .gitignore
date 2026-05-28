@@ -4,15 +4,23 @@ context/profile.md
 context/bank.md
 context/state.md
 context/sources.md
+context/differentiators.md
+
+# Personal session state
+plan.md
+backlog.md
 
 # Personal documents
 cover-letters/
 resumes/
+commands/examples/application-answers.md
 
 # Generated feed data
 feed-agent/seen.json
 feed-agent/today.json
+feed-agent/dismissed.json
 feed-agent/run.log
+feed-agent/feed.md
 feed-agent/feed.md
 feed-agent/archive/
 feed-agent/learnings.md

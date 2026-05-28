@@ -12,7 +12,7 @@ If `/assess` hasn't been run for this role yet, run a quick internal assessment 
 
 ## Sequence
 
-1. **Identify the 3 themes** that best bridge the JD's priorities with Anjali's strongest evidence. These become the bold headers. Draw from:
+1. **Identify the 3 themes** that best bridge the JD's priorities with your strongest evidence. These become the bold headers. Draw from:
    - `/assess` output if it exists for this role
    - `context/bank.md` → Ready-to-Use Points
    - `context/bank.md` → Gaps to Handle Carefully (to know what to avoid)
@@ -23,7 +23,7 @@ If `/assess` hasn't been run for this role yet, run a quick internal assessment 
    - Opening: role name, team, relocation context (if relevant), tie to company mission in their own language
    - Body: 2-4 bold headers as prose paragraphs (3-5 sentences each), not bullets
    - Closing: one sentence tied to the specific team or product
-   - Sign-off: `Kind Regards, / Anjali`
+   - Sign-off: `Kind Regards, / [your name]` — pull from `context/bank.md` if set
 
 4. **Independent quality check before delivering.** Before outputting, assess: Does this read like a Staff PM or like someone justifying their application? Is every paragraph earning its place, or is anything filler? Cut anything that doesn't directly serve the letter's argument.
 
@@ -31,7 +31,7 @@ If `/assess` hasn't been run for this role yet, run a quick internal assessment 
 
 ## Style Constraints (from bank.md examples)
 
-- Tone: warm but assured — she's choosing them too, not auditioning
+- Tone: warm but assured — you're choosing them too, not auditioning
 - British English throughout
 - No "leveraging", "robust", "meticulous", "synergy", "dynamic"
 - No three-adjective constructions
@@ -55,7 +55,7 @@ If `/assess` hasn't been run for this role yet, run a quick internal assessment 
 ## Draft Notes
 - Themes used: [list the 3 headers and which bank points each draws from]
 - Concerns addressed: [how the top concern from /concerns is handled, if applicable]
-- What's missing: [anything that would strengthen this if Anjali can provide more context]
+- What's missing: [anything that would strengthen this if you can provide more context]
 ```
 
 **Recommended next**: `/concerns` — if the top recruiter concerns haven't been addressed yet in the letter.

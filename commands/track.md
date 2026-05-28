@@ -26,7 +26,7 @@ If no sub-command is given, default to `/track status`.
 | **Interview Loop** | Active interview rounds in progress |
 | **Offer** | Offer received, evaluating or negotiating |
 | **Accepted** | Offer accepted |
-| **Withdrawn** | Anjali withdrew |
+| **Withdrawn** | You withdrew |
 | **Rejected** | No longer active — company passed |
 | **Paused** | On hold — JD closed, role frozen, timing issue |
 

@@ -114,6 +114,26 @@ After assessment, add to `context/state.md`:
 
 ---
 
+## Gap Write-Back
+
+After assessment, check the Requirement Coverage dimension and Recruiter
+Concerns for structural gaps — things identified as genuinely missing, not
+frameable.
+
+If any structural gaps are found that don't already exist in the
+`## Hard gaps` section of `context/differentiators.md`, surface them and
+ask before writing:
+
+> "I identified [N] structural gap(s) not in your hard gaps list:
+> - [gap 1]
+> - [gap 2]
+> Should I add any of these? (confirm each)"
+
+Only write confirmed gaps. Frameable gaps (addressable with narrative)
+do not belong here — they stay in the assessment output only.
+
+---
+
 ## Self-Update on Feedback
 
 When the user pushes back on a verdict, challenges a concern, or provides context that changes the assessment, do two things:

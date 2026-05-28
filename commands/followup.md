@@ -32,7 +32,7 @@ If any of these are missing, ask for them before drafting — a generic follow-u
    - **Opening:** reference something real from the conversation — a problem they mentioned, a product direction, something they said that resonated
    - **Middle:** one sentence connecting your background to what came up — don't rehash the whole interview
    - **Close:** warm, forward-looking, one sentence. No "I look forward to hearing from you."
-   - **Sign-off:** Kind Regards, Anjali
+   - **Sign-off:** Kind Regards, / [your name] — pull from `context/bank.md` if set, otherwise ask
 
 ---
 

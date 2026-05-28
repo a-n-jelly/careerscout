@@ -118,8 +118,6 @@ See `commands/` for full execution protocols. Brief reference:
 | `/concerns` | Anticipate recruiter concerns, ranked dealbreaker → minor, with counter-framings |
 | `/notes` | Quick capture — paste raw recruiter feedback, call notes, or context. Files it to the right application without requiring structure |
 | `/update` | Log a post-event (interview scheduled, just finished, heard back, rejected, offer). Updates state and suggests the right next action |
-| `/followup` | Draft a post-interview follow-up email. Triggered automatically by `/update` after a completed interview. |
-| `/negotiate` | Think through an offer response — read on the offer, whether to push, and a draft call script or email. Triggered automatically by `/update` when an offer is logged. |
 | `/track` | Application tracker — add, update, and view the pipeline. Stores salary, comp, recruiter, stage, and next actions |
 | `/track add` | Add a new application |
 | `/track update [company]` | Update details or status for an existing application (freeform — no field names needed) |

@@ -1,6 +1,6 @@
 # /notes — Quick Capture Protocol
 
-Lightweight capture for raw input that doesn't fit a structured workflow. The goal is to file information to the right place without making Anjali structure anything.
+Lightweight capture for raw input that doesn't fit a structured workflow. The goal is to file information to the right place without requiring you to structure anything.
 
 ---
 

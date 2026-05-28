@@ -74,6 +74,56 @@ Ask these one at a time, in order. Wait for each answer before moving to the nex
 17. Do you have a Mnookin doc? If yes, paste it or give the file path — it'll be used for scoring and will supplement or override what you've entered above.
 18. Do you have a CMF (Company/Market Fit doc)? Same — paste or path, or skip.
 
+### Step 3b — Draft differentiators.md
+
+From `resume.md` and any CMF/Mnookin docs provided, extract:
+
+1. **Key edges** — what this candidate has that most candidates don't. Look for: scale signals, cross-functional complexity, ownership depth, domain intersections, unusual credentials. Write 3–4 bullets, each with a "why it matters" clause.
+2. **Target level** — infer from their most recent title and trajectory
+3. **Positioning summary** — one paragraph: who they are, what makes them a distinct candidate, what they're targeting
+
+Show the draft to the user:
+
+> "Here's your differentiators profile — this is what `/feed` will use to score the Edge dimension. Does this reflect how you'd position yourself?"
+
+Wait for confirmation or edits. Apply changes. Write to `context/differentiators.md`.
+
+### Step 3c — Capture hard gaps
+
+Ask:
+
+> "Are there any domains, technical areas, or role types where you know you don't have the experience — things that would come up as gaps if you got to an interview loop?"
+
+Accept any answer. Examples: "I've never worked on payment rails infrastructure", "I don't have ML/recommendation systems experience", "I've never managed external developer APIs."
+
+From the answer, write a `## Hard gaps` section to `context/differentiators.md`:
+
+```markdown
+## Hard gaps — drop Requirements to 1 if JD requires any of these
+
+- [gap 1 — stated plainly, with the JD signal that would trigger it]
+- [gap 2]
+...
+
+_This section is auto-updated by `/assess` when structural gaps are identified._
+```
+
+If the user says "none" or "I'm not sure", write the section header with a comment:
+
+```markdown
+## Hard gaps — drop Requirements to 1 if JD requires any of these
+
+<!-- None identified at setup. Will be populated by /assess and /calibrate over time. -->
+
+_This section is auto-updated by `/assess` when structural gaps are identified._
+```
+
+Explain briefly:
+
+> "These are used to automatically flag roles where you'd hit a wall at interview — so the feed surfaces them as lower-scoring rather than hiding them entirely."
+
+---
+
 ### Step 4 — Write sources.md
 
 Incorporate all answers into `context/sources.md`. Structure:
@@ -118,12 +168,140 @@ hours_old: [n]
 [paths or inline content for Mnookin / CMF if provided]
 ```
 
-### Step 5 — Confirm
+### Step 5 — First fetch
+
+Tell the user:
+
+> "Feed configured. Run this now to fetch today's roles, then come back and run `/feed` to score them:"
+
+```bash
+python3 feed-agent/fetch.py
+```
+
+Wait for them to confirm it ran before moving on.
+
+### Step 6 — Set up the daily scheduler
+
+Ask:
+
+> "Want to schedule fetch.py to run automatically each morning at 8am? It takes about a minute to set up — you'd wake up to fresh roles every day without having to run the script manually."
+
+If yes, first detect the OS by running `uname -s`. Then follow the appropriate path below.
+
+---
+
+#### macOS (`uname -s` returns `Darwin`)
+
+1. Check if `feed-agent/run-daily.sh` exists. If not, create it:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+trap 'osascript -e "display notification \"Feed failed — check run.log\" with title \"Job Feed\"" 2>/dev/null' ERR
+AGENT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PYTHON="$AGENT_DIR/feed-agent/.venv/bin/python3"
+cd "$AGENT_DIR"
+echo "--- $(date '+%Y-%m-%d %H:%M:%S') ---" >> feed-agent/run.log
+"$PYTHON" feed-agent/fetch.py >> feed-agent/run.log 2>&1
+echo "Done." >> feed-agent/run.log
+```
+
+Make it executable: `chmod +x feed-agent/run-daily.sh`
+
+2. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.[username].jobfeed.plist`:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.[username].jobfeed</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/[username]/Documents/Claude/agents/career-coach/feed-agent/run-daily.sh</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>8</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/[username]/Documents/Claude/agents/career-coach/feed-agent/run.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/[username]/Documents/Claude/agents/career-coach/feed-agent/run.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
+```
+
+3. Load it: `launchctl load ~/Library/LaunchAgents/com.[username].jobfeed.plist`
+4. Confirm: `launchctl list | grep jobfeed` — should show the job listed.
+
+---
+
+#### Linux (`uname -s` returns `Linux`)
+
+1. Check if `feed-agent/run-daily.sh` exists. If not, create it (same content as macOS above but remove the `osascript` trap line — it won't work on Linux).
+
+Make it executable: `chmod +x feed-agent/run-daily.sh`
+
+2. Open the crontab editor: `crontab -e`
+
+3. Add this line (replacing the path with the actual absolute path):
+
+```
+0 8 * * * /bin/bash /home/[username]/Documents/Claude/agents/career-coach/feed-agent/run-daily.sh
+```
+
+4. Save and exit. Confirm: `crontab -l` — should show the entry.
+
+---
+
+#### Windows
+
+1. Check if `feed-agent/run-daily.ps1` exists. If not, create it:
+
+```powershell
+$AgentDir = Split-Path -Parent $PSScriptRoot
+$Python = "$AgentDir\feed-agent\.venv\Scripts\python.exe"
+$Log = "$AgentDir\feed-agent\run.log"
+Add-Content $Log "--- $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss') ---"
+& $Python "$AgentDir\feed-agent\fetch.py" >> $Log 2>&1
+Add-Content $Log "Done."
+```
+
+2. Open Task Scheduler and create a new basic task:
+   - **Trigger**: Daily at 8:00 AM
+   - **Action**: Start a program
+   - **Program**: `powershell.exe`
+   - **Arguments**: `-ExecutionPolicy Bypass -File "C:\Users\[username]\Documents\Claude\agents\career-coach\feed-agent\run-daily.ps1"`
+
+3. Or via command line (run as Administrator):
+
+```cmd
+schtasks /create /tn "JobFeedFetch" /tr "powershell.exe -ExecutionPolicy Bypass -File \"C:\Users\[username]\Documents\Claude\agents\career-coach\feed-agent\run-daily.ps1\"" /sc daily /st 08:00
+```
+
+4. Confirm: `schtasks /query /tn "JobFeedFetch"`
+
+---
+
+If no or skipped, tell them:
+
+> "No problem — just run `python3 feed-agent/fetch.py` manually each morning before opening Claude Code. You can set up the scheduler any time by asking me."
+
+### Step 7 — Confirm and set expectations
 
 Say:
 
-> "Feed configured. Run `python3 feed-agent/fetch.py` to fetch today's roles, then open Claude Code and run `/feed` to score them."
-
-If the user provided a Mnookin or CMF doc, add:
-
-> "I've incorporated your [Mnookin / CMF] into the scoring criteria — it'll be used to weight roles from the next feed run."
+> "All set. Here's what to expect:
+> - fetch.py runs at 8am daily (or manually with `python3 feed-agent/fetch.py`)
+> - Open Claude Code and run `/feed` to score the results
+> - After your first few feeds, run `/calibrate` — the first runs will have noise that calibration clears up
+> - Run `/retro` every 2-3 weeks to review pipeline health and refine positioning"

@@ -1,6 +1,6 @@
 # /concerns — Recruiter Concern Anticipation Protocol
 
-Dedicated workflow for when Anjali wants to pressure-test her candidacy before writing or submitting. More thorough than the concerns section in `/assess` — this one drills into counter-framings and can flow directly into a practice drill.
+Dedicated workflow for pressure-testing your candidacy before writing or submitting. More thorough than the concerns section in `/assess` — this one drills into counter-framings and can flow directly into a practice drill.
 
 ---
 
@@ -16,16 +16,16 @@ Requires either: (a) an active application with a JD in `context/state.md`, or (
    - JD requirements vs. resume gaps
    - `context/bank.md` → "Gaps to Handle Carefully" section
    - Any prior `/assess` output for this role
-   - Storybank coverage (does she have a story for each likely concern area?)
+   - Storybank coverage (do you have a story for each likely concern area?)
 
-2. **Generate concerns independently.** Don't ask Anjali what she's worried about first — her blind spots are part of what this is for. After generating, ask: "Which of these did you already expect? Anything I missed?"
+2. **Generate concerns independently.** Don't ask what you're worried about first — blind spots are part of what this is for. After generating, ask: "Which of these did you already expect? Anything I missed?"
 
 3. **Rank by severity** (Dealbreaker → Significant → Minor).
 
 4. **Attach counter-framings** for every Significant+ concern:
    - Direct question version
    - Subtle probe version
-   - Follow-up challenge (the pushback after her first answer)
+   - Follow-up challenge (the pushback after your first answer)
    - Best story to deploy (from resume/bank)
 
 5. **Offer a live drill** on the top concern: "Your biggest concern is [X]. Want to practice handling it right now? I'll run the direct question, then the subtle probe, then the follow-up challenge."
@@ -57,7 +57,7 @@ Requires either: (a) an active application with a JD in `context/state.md`, or (
 1. **[Concern]** — [one-sentence counter]
 
 ### What's NOT a Concern
-[1-2 things she might be worried about that the JD doesn't actually signal. Saves prep energy.]
+[1-2 things you might be worried about that the JD doesn't actually signal. Saves prep energy.]
 
 ### Drill Offer
 Your top concern is [X]. Want to practice it now?
