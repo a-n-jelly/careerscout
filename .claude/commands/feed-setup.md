@@ -28,13 +28,16 @@ From the resume, infer:
 - **Location**: where they're based (if listed)
 - **Work authorisation**: whether they require sponsorship (if listed)
 
-Draft a `sources.md` using these inferences. Annotate each inferred section with a brief note explaining the reasoning, e.g. *"Inferred from 8 years in fintech PM roles."* Leave gaps clearly marked as `[not found in resume — see below]`.
+Also draft **5–8 search queries** directly from these inferences. Queries should combine title + domain/keyword + location signal. Examples:
+- "Senior Product Manager fintech Seattle"
+- "Senior PM payments remote"
+- "Senior Product Manager consumer lending Seattle"
 
 Show the draft to the user. Say:
 
-> "Here's what I pulled from your resume. Read through it and tell me if anything's wrong before we fill in the rest."
+> "Here's what I pulled from your resume — including a first set of search queries for the feed. Read through and tell me if anything's wrong before we fill in the rest."
 
-Wait for confirmation or corrections. Apply any changes.
+Wait for confirmation or corrections. Apply any changes. The user can add, remove, or reword queries freely.
 
 ### Step 3 — Ask the remaining questions
 
@@ -138,9 +141,9 @@ Incorporate all answers into `context/sources.md`. The sections below must use t
 
 ## Search Queries (run these)
 
-[One numbered query per line, derived from target titles + domains + location]
-1. [e.g. Senior Product Manager fintech Seattle]
-2. [e.g. Senior PM payments remote]
+[Confirmed queries from Step 2 — one per line]
+1. [query]
+2. [query]
 
 ---
 
