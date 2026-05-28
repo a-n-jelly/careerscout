@@ -17,7 +17,7 @@ Two loops: the **feed** finds roles worth applying to, the **application loop** 
 | Command | What it does |
 |---------|--------------|
 | `/feed` | Score today's fetched roles and write the shortlist |
-| `/calibrate` | Tune scoring from your feed reactions |
+| `/calibrate` | Tune scoring from your feed reactions — updates sources.md, differentiators.md, and learnings.md |
 | `/feed reject` | Log a role rejection |
 | `/feed add` | Manually add a role to the feed |
 | `/retro` | Periodic review — rejection patterns, pipeline health |
@@ -31,7 +31,7 @@ Paste a job description and `/assess` gives you a fit verdict, ranked recruiter 
 | Command | What it does |
 |---------|--------------|
 | `/improve-resume` | Review and strengthen your master resume _(untested — use with caution)_ |
-| `/assess` | Fit verdict, recruiter concerns, and Mnookin fit |
+| `/assess` | Fit verdict, recruiter concerns, and Mnookin fit — feedback updates bank.md, profile.md, and differentiators.md |
 | `/tailor-resume` | Tailor your resume to the JD |
 | `/cover-letter` | Write a cover letter in your voice |
 | `/notes` | Capture recruiter feedback or call notes |
