@@ -60,6 +60,10 @@ Save the answers to the `## Tailoring preferences` section in `context/bank.md` 
    - Bullets using the wrong framing for this role type (e.g., B2B language for a consumer role)
    - Bullets missing entirely for a JD priority the user can actually speak to
 
+   Before finalising which bullets to change, apply two filters:
+   - **ATS filter**: does this bullet contain the terms an ATS would scan for given this JD? Missing keywords that appear repeatedly in the JD are a flag — but only add them if the user can genuinely claim them.
+   - **Recruiter filter**: read each bullet as a screener with 10 seconds per resume. Does the impact and seniority land immediately, or is it buried in context? A bullet that requires reading twice has failed.
+
 5. **Form your own view of what's weak** before asking for context. Ask one targeted question only if reframing genuinely requires information you don't have.
 
 
