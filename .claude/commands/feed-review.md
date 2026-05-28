@@ -2,7 +2,7 @@
 
 Walk through the recommended roles from today's feed, capture reactions, and log any rejections to learnings.md so future runs filter them automatically.
 
-Run this after reviewing feed/feed.md. Takes 5–10 minutes.
+Run this after reviewing feed/daily-feed-output.md. Takes 5–10 minutes.
 
 ---
 
@@ -10,7 +10,7 @@ Run this after reviewing feed/feed.md. Takes 5–10 minutes.
 
 ### Step 1 — Load the feed
 
-Read `feed/feed.md`. Extract the recommended list only. If there's nothing recommended, say: "No recommended roles to review — nothing to log."
+Read `feed/daily-feed-output.md`. Extract the recommended list only. If there's nothing recommended, say: "No recommended roles to review — nothing to log."
 
 ### Step 2 — Walk through each role
 

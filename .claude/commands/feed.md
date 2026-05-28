@@ -1,6 +1,6 @@
 # /feed — Daily Job Feed
 
-Scores roles from `feed-agent/today.json` against your targeting criteria and writes a shortlist to `feed/feed.md`. Lightweight — no resume, no storybank. Those belong in `/assess`.
+Scores roles from `feed-agent/today.json` against your targeting criteria and writes a shortlist to `feed/daily-feed-output.md`. Lightweight — no resume, no storybank. Those belong in `/assess`.
 
 ---
 
@@ -20,7 +20,7 @@ That's it. Do not load resume.md, profile.md, or storybank.md.
 
 ## Step 2 — Archive previous feed
 
-Archive current `feed/feed.md` to `feed/archive/YYYY-MM-DD.md` using today's date.
+Archive current `feed/daily-feed-output.md` to `feed/archive/YYYY-MM-DD.md` using today's date.
 Skip if it's the placeholder ("No feed run yet").
 
 ---
@@ -67,7 +67,7 @@ Injected roles (flagged `injected: true`) always appear in Worth a Look with the
 
 ---
 
-## Step 4 — Write feed/feed.md
+## Step 4 — Write feed/daily-feed-output.md
 
 ```markdown
 # Job Feed — [DATE]
@@ -141,7 +141,7 @@ _Fetched: [date]. Run `/assess` on any role worth a closer look._
 
 ## Step 5 — Write dismissed roles
 
-After writing feed/feed.md, write all scored role IDs (both Recommended and
+After writing feed/daily-feed-output.md, write all scored role IDs (both Recommended and
 Stretch) to `feed-agent/dismissed.json`. Format:
 
 ```json

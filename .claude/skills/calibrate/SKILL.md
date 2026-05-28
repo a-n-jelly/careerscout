@@ -17,7 +17,7 @@ the scorer reads. No changes are written until you've confirmed each one.
 
 ## Minimum Data Check
 
-Requires `feed/feed.md` to exist and contain scored results (not the placeholder).
+Requires `feed/daily-feed-output.md` to exist and contain scored results (not the placeholder).
 If it's missing or empty: "Run `/feed` first to generate a scored feed, then come back."
 
 ---
@@ -25,7 +25,7 @@ If it's missing or empty: "Run `/feed` first to generate a scored feed, then com
 ## Step 1 — Load context
 
 Read:
-- `feed/feed.md` — most recent scored output (recommended roles + scores)
+- `feed/daily-feed-output.md` — most recent scored output (recommended roles + scores)
 - `feed-agent/today.json` — role data including descriptions (used to surface requirements without live fetches)
 - `feed-agent/learnings.md` — existing rejected patterns and injected roles
 - `context/sources.md` — avoid list, target signals, priority companies, comp band
@@ -71,7 +71,7 @@ Don't assume. The user picks the grain.
 
 ### Role-by-role mode
 
-Pull each recommended role from `feed/feed.md` in order. For each role:
+Pull each recommended role from `feed/daily-feed-output.md` in order. For each role:
 
 1. Look up the role in the today.json lookup by matching company + title.
 2. If `description` is non-empty (Indeed/LinkedIn roles): extract and show the top 4-5 requirements inline from the description text before asking for feedback.

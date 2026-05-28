@@ -20,7 +20,7 @@ When instructions compete, follow this order:
 
 1. Check if `context/resume.md` exists. If not, stop and ask for it before anything else.
 2. Read `context/state.md`, `context/resume.md`, `context/profile.md`, and `context/bank.md`.
-3. Check `feed/feed.md`. If the date in the header matches today, show a brief feed summary before anything else:
+3. Check `feed/daily-feed-output.md`. If the date in the header matches today, show a brief feed summary before anything else:
    - Recommended count and top 1-2 roles (title, company, "Why this is yours" line)
    - Then move to pipeline recommendations below
    - If the feed date doesn't match today: skip the summary, don't mention it
@@ -124,6 +124,6 @@ Adjust in `context/bank.md`:
 | `context/sources.md` | Feed criteria: roles, comp, avoid list | Yes |
 | `context/differentiators.md` | Edges and hard gaps for feed scoring | Yes |
 | `feed-agent/learnings.md` | Rejected patterns and injected roles | Yes |
-| `feed/feed.md` | Latest feed output | Yes — overwritten each run |
+| `feed/daily-feed-output.md` | Latest feed output | Yes — overwritten each run |
 | `cover-letters/` | One file per cover letter | Yes |
 | `.claude/commands/*.md` | Full command protocols | No |

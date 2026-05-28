@@ -17,7 +17,7 @@ Logs a role from the current feed as rejected and extracts the disqualifying sig
 
 ### Step 1 — Identify the role
 
-Find the role in `feed/feed.md`. If the match is ambiguous, show the options and ask which one.
+Find the role in `feed/daily-feed-output.md`. If the match is ambiguous, show the options and ask which one.
 
 ### Step 2 — Ask why
 
