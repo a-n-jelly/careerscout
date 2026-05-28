@@ -74,7 +74,7 @@ The agent reads `context/` at session start — you don't re-explain your backgr
 |------|------------|---------------|
 | `resume.md` | Master resume | No |
 | `profile.md` | Off-resume context: stories, gaps, comp targets | Yes |
-| `bank.md` | Cover letter style, talking points, Q&A | Yes |
+| `bank.md` | Cover letter style, talking points, Q&A, assess calibration | Yes — by `/voice-setup`, `/assess`, `/tailor-resume` |
 | `state.md` | Live application pipeline | Yes |
 | `sources.md` | Feed criteria: roles, locations, comp, deal-breakers | Yes — by `/calibrate` |
 | `differentiators.md` | Your edges and hard gaps — used in feed scoring | Yes — by `/assess` and `/calibrate` |
