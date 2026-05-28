@@ -8,30 +8,30 @@ Copy this file to `context/differentiators.md` and fill it in, or run `/feed-set
 
 ## Key edges
 
-- **[Scale signal]**: [What you've done at scale that most candidates haven't — e.g. "Led payments product to X users across Y markets"]. Most candidates have either scale or complexity — not both.
-- **[Ownership depth]**: [A zero-to-one or full-ownership example — e.g. "Owned roadmap, strategy, and execution end-to-end as sole PM at a startup, with direct C-suite exposure and commercial outcomes".]
-- **[Domain or credential]**: [A specific domain intersection or unusual credential — e.g. "Shipped products through regulated environments across multiple markets".]
-- **[Current builder signal]**: [Anything you're actively building that closes a gap or adds credibility — e.g. "Currently building a consumer AI product end-to-end, can evaluate AI products as both PM and builder".]
+- **[Scale signal]**: Led data platform migration serving 40M monthly active users across 12 markets, with zero downtime and a 60% reduction in query latency. Most candidates have either scale or complexity — not both.
+- **[Ownership depth]**: Sole engineering manager for a 0-to-1 developer tooling product at a Series B startup — owned hiring, roadmap, and architecture with direct board exposure and a successful launch to 3,000 paying teams.
+- **[Domain or credential]**: 8 years shipping products in healthcare data interoperability — deep familiarity with FHIR, HL7, and HIPAA constraints that most product leaders treat as blockers rather than design inputs.
+- **[Current builder signal]**: Currently shipping an open-source observability tool with 1,200 GitHub stars — can evaluate developer experience from both sides of the table.
 
 ---
 
 ## Target level
 
-Senior Product Manager
+Senior Engineering Manager / Director of Engineering
 
 ---
 
 ## Positioning summary
 
-[One paragraph: who you are, what makes you a distinct candidate, what you're targeting. Written in third person for internal scoring use — e.g. "Seattle-based Senior PM with X years across [domains]. The thread across all roles: [what connects them]. The unique combination is [what sets you apart]."]
+[One paragraph: who you are, what makes you a distinct candidate, what you're targeting. Written in third person for internal scoring use — e.g. "Seattle-based Senior EM with 10 years across healthcare and developer tooling. The thread across all roles: building high-trust, high-output teams in technically complex domains. The unique combination is deep IC roots plus proven people leadership at scale."]
 
 ---
 
 ## Notes for scoring
 
-- **Edge scores high (3)** when: [role signals that map to your strongest differentiators — e.g. consumer payments depth, regulated environment, zero-to-one ownership]
-- **Edge scores moderate (2)** when: [adjacent signals — e.g. consumer product but not your specific domain, or B2B but needs strategic ownership]
-- **Edge scores low (1)** when: [role needs expertise you don't have — e.g. ML/data science depth, specific infrastructure domain]
+- **Edge scores high (3)** when: [role signals that map to your strongest differentiators — e.g. developer tooling, healthcare data, platform engineering, greenfield ownership]
+- **Edge scores moderate (2)** when: [adjacent signals — e.g. B2B SaaS but not developer-facing, or platform work without the healthcare angle]
+- **Edge scores low (1)** when: [role needs expertise you don't have — e.g. consumer product, ad tech, pure growth engineering]
 
 ---
 
@@ -39,7 +39,7 @@ Senior Product Manager
 
 <!-- None identified yet. Will be populated by /feed-setup, /assess, and /calibrate over time. -->
 <!-- Add entries like: -->
-<!-- - Personalisation, recommendation, or ranking systems (ML-adjacent product work) -->
+<!-- - Consumer growth / experimentation at scale (A/B testing, CAC optimisation) -->
 <!-- - [Domain or technical area you genuinely don't have experience in] -->
 
 _This section is auto-updated by `/assess` when structural gaps are identified._
