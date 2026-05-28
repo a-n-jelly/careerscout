@@ -68,7 +68,7 @@ flowchart LR
 ### 1. Clone and open
 
 ```bash
-git clone <repo>
+git clone https://github.com/a-n-jelly/careerscout.git
 cd career-coach
 ```
 
