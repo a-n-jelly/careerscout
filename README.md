@@ -82,6 +82,17 @@ The agent reads `context/` at session start — you don't re-explain your backgr
 
 ---
 
+## What's next
+
+The feed is the area with the most room to grow. In priority order:
+
+- **Workday ATS support** — some target companies (Remitly, others) moved to Workday. Direct ATS scraping for Workday would close the biggest remaining fetch gap.
+- **Wellfound as a source** — startup and early-stage roles that don't appear on LinkedIn. Worth adding once core calibration is stable.
+- **Calibration improvements** — smarter feedback loops: domain rejections updating Domain Preferences automatically, pattern summaries after enough runs, Edge scoring feedback when a strong-match role gets rejected.
+- **Feed debug command** — paste a LinkedIn URL to diagnose why a role wasn't fetched (wrong query, broken ATS slug, outside result window).
+
+---
+
 ## Contributing
 
 See `CLAUDE.md` for the full agent instructions and file index.
