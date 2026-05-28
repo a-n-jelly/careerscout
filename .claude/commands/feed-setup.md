@@ -41,9 +41,10 @@ Wait for confirmation or corrections. Apply any changes.
 Ask these one at a time, in order. Wait for each answer before moving to the next. Do not bundle questions.
 
 **Location & commute**
-1. What's your location preference — remote, hybrid, or on-site?
+1. What's your primary city, and what's your location preference — remote, hybrid, or on-site?
 2. *(If hybrid or on-site)* What's your maximum commute — distance or time?
 3. Are you open to relocating?
+4. *(If open to remote)* Any cities or states to exclude from remote results? (e.g. roles listed in New York or Chicago that you wouldn't consider)
 
 **Employment type**
 4. Are you looking for full-time roles only, or are you open to contract or fractional work?
@@ -126,47 +127,109 @@ Explain briefly:
 
 ### Step 4 — Write sources.md
 
-Incorporate all answers into `context/sources.md`. Structure:
+Incorporate all answers into `context/sources.md`. The sections below must use these exact headings — fetch.py parses them directly.
 
-```
-## Role Targets
-[inferred + confirmed titles and seniority]
+```markdown
+> **Purpose:** Your search criteria for the daily job feed. fetch.py reads this file to know what to fetch, filter, and score.
 
-## Location & Commute
-[preference, commute limit, relocation]
+# Job Feed — Search Criteria
 
-## Employment Type
-[full-time / contract / fractional]
+---
 
-## Work Authorisation
-[requires sponsorship: yes/no]
+## Search Queries (run these)
 
-## Compensation
-Floor: [base]
-Target: [base]
-Reach: [base]
-Structure preferences: [notes]
-Benefits must-haves: [list]
+[One numbered query per line, derived from target titles + domains + location]
+1. [e.g. Senior Product Manager fintech Seattle]
+2. [e.g. Senior PM payments remote]
 
-## Target Companies
-[table: company, why, ATS URL]
-
-## Company Preferences
-[stage, size, culture signals]
-
-## What to Avoid
-[deal-breakers]
-
-## Timeline
-[active / passive]
+---
 
 ## Feed Settings
-results_wanted: [n]
-hours_old: [n]
 
-## Scoring Documents
+results_wanted: [from Q15]
+hours_old: [from Q16]
+
+---
+
+## Target Titles
+
+[Title keywords a role must contain — any match accepts it]
+- product manager
+- pm
+[add others based on role targets, e.g. "head of product" if above-target is in scope]
+
+---
+
+## Target Level
+
+[Derived from seniority discussion in Step 2 and Q answers]
+**Target:** [e.g. senior, sr, staff, lead, principal]
+**Above target:** [e.g. director, vp, head of, vice president, chief]
+**Below target:** [e.g. associate, junior, jr, entry level]
+
+---
+
+## Location
+
+**Primary city:** [from Q1, e.g. Seattle, WA — or leave blank if fully remote]
+**Accept remote:** [yes / no — from Q1]
+**Reject if clearly located in:** [from Q4, comma-separated, or leave blank]
+
+---
+
+## Priority Companies
+
+[From Q11 — companies worth watching directly]
+
+| Company | Why |
+|---------|-----|
+| [Company] | [reason] |
+
+---
+
+## ATS Endpoints
+
+[Add manually if company uses a supported ATS — Greenhouse, Lever, or Ashby]
+
+| Company | Type | Slug |
+|---------|------|------|
+
+---
+
+## What to Avoid
+
+[From Q13 — deal-breakers. Use AND: prefix for multi-keyword rules]
+- [rule]
+- AND: [word1] [word2]
+
+---
+
+## Context (not parsed by fetch.py)
+
+### Employment Type
+[from Q4]
+
+### Work Authorisation
+[from Q5]
+
+### Compensation
+Floor: [from Q6]
+Target: [from Q7]
+Reach: [from Q8]
+Structure: [from Q9]
+Benefits: [from Q10]
+
+### Company Preferences
+[from Q12 — stage, size, culture]
+
+### Timeline
+[from Q14]
+
+### Scoring Documents
 [paths or inline content for Mnookin / CMF if provided]
 ```
+
+After writing `context/sources.md`, **delete `context/sources.example.md`** — it's no longer needed.
 
 ### Step 5 — First fetch
 
