@@ -204,10 +204,4 @@ If the Cover Letter Angle or Differentiation Potential section resonates strongl
 
 Only write if the feedback reveals something reusable. Ask: would this change how I assess a *different* role in future? If no — don't log it. If yes — log it.
 
----
-
-## Calibration Log
-
-Entries added during sessions when assessments were corrected or refined.
-
-- **Don't overweight implied domain gaps.** If the JD doesn't explicitly require domain experience, a domain gap is frameable, not structural. Check whether the underlying product problem is transferable before calling it a gap. **Why:** Easy to over-call a Long-Shot when the JD requires transferable skills (e.g. data-driven PM) rather than specific domain experience. **Apply when:** Any role outside the candidate's primary domain — check the JD requirements literally before penalising for domain distance.
+The Calibration Log lives in `context/bank.md` under `## Assess calibration`. Read it at the start of every assessment. Write to it when the bar above is met.

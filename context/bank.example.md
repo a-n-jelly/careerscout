@@ -39,6 +39,16 @@ _Applies when using `/tailor-resume`. Leave blank to use defaults._
 
 ---
 
+## Assess calibration
+
+_Rules refined from /assess sessions. Read before every assessment. Add entries when a verdict correction reveals a principle that generalises._
+
+<!-- Example entry:
+- **Don't overweight implied domain gaps.** If the JD doesn't explicitly require domain experience, the gap is frameable not structural. Check whether the underlying problem is transferable before calling it a gap.
+-->
+
+---
+
 ## Q&A Bank
 
 Answers to questions that come up repeatedly — screening calls, applications, cover letters.
