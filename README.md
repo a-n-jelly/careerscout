@@ -2,6 +2,8 @@
 
 A Claude Code agent for your job search. Paste your resume once — it finds roles, scores fit, tailors your resume, writes cover letters, and tracks applications.
 
+You don't need to memorise commands. Paste a job description and it runs `/assess`. Paste recruiter feedback and it files it. Mention an outcome ("got rejected", "interview tomorrow") and it logs it and tells you what to do next. Type `/help` any time for a command reference.
+
 ---
 
 ## How it works

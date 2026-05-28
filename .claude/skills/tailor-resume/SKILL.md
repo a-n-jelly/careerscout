@@ -21,9 +21,9 @@ Requires a JD. Without it: "Paste the JD and I'll tailor the resume to it."
 
 ## Core rules
 
-**Do not mirror JD language.** The goal is resonance, not reflection. Hiring managers notice copy-paste framing immediately. Improve what's already there: sharpen weak bullets, reframe for the right audience, make implicit strengths explicit. Every change should sound like something Anjali would actually say, not like the JD fed back.
+**Do not mirror JD language.** The goal is resonance, not reflection. Hiring managers notice copy-paste framing immediately. Improve what's already there: sharpen weak bullets, reframe for the right audience, make implicit strengths explicit. Every change should sound like something the user would actually say, not like the JD fed back.
 
-**Write from her words, not from synthesis.** When drafting bullets, start from what she actually said, not from a polished analytical version of it. If a bullet sounds like a post-mortem or a case study, that's a signal to stop and ask what actually happened. Plain language with a specific insight is stronger than dressed-up jargon. When she pushes back on phrasing, ask her to describe it herself before offering another rewrite.
+**Write from their words, not from synthesis.** When drafting bullets, start from what the user actually said, not from a polished analytical version of it. If a bullet sounds like a post-mortem or a case study, that's a signal to stop and ask what actually happened. Plain language with a specific insight is stronger than dressed-up jargon. When they push back on phrasing, ask them to describe it themselves before offering another rewrite.
 
 **Don't rewrite bullets that are already strong.** Before suggesting a change, ask: is this actually weak, or am I just looking for something to do? If a bullet is already doing the job, say so explicitly and move on. Rewriting for the sake of it introduces fabricated framing and erodes trust in the output.
 
@@ -43,6 +43,7 @@ Requires a JD. Without it: "Paste the JD and I'll tailor the resume to it."
    - Bullets missing entirely for a JD priority Anjali can actually speak to
 
 5. **Form your own view of what's weak** before asking for context. Ask one targeted question only if reframing genuinely requires information you don't have.
+
 
 6. **Show before/after for each change** with a one-line explanation of what changed and why.
 
@@ -77,8 +78,6 @@ Why: [one sentence — include original only if the contrast materially helps]
 ### Needs More Information
 [Any rewrites blocked on context you don't have, with the specific question]
 ```
-
-**Recommended next**: `/coverletter` — use the tailored framing as the basis for the letter.
 
 ---
 

@@ -24,7 +24,8 @@ When instructions compete, follow this order:
    - Application has a JD but no cover letter → suggest `/coverletter`
    - Application has no fit assessment → suggest `/assess`
    - Resume not tailored for a role → suggest `/tailor`
-   - Nothing active → ask what role they're working on today
+   - Nothing active, resume exists → say: "Nothing in progress yet — paste a job description and I'll assess it, or run `/feed` if you've set up the feed."
+   - Nothing active, no resume → run `/setup`
 
 **Example**: "You have 2 active applications. `stripe-pm-payments` has a JD but no cover letter yet — that's the highest-leverage move. Want to start there?"
 
@@ -63,6 +64,7 @@ Full protocols in `.claude/commands/`. Brief reference:
 | Command | What it does |
 |---------|--------------|
 | `/setup` | Full onboarding — resume, context files, voice, feed |
+| `/help` | Quick reference of all commands |
 | `/voice-setup` | Calibrate writing voice from real samples |
 | `/feed-setup` | Configure job feed — comp, deal-breakers, scheduler |
 | `/feed` | Score today's fetched roles, write shortlist |
