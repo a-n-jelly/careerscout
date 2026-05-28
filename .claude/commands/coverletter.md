@@ -58,12 +58,16 @@ If `/assess` hasn't been run for this role yet, run a quick internal assessment 
 - What's missing: [anything that would strengthen this if you can provide more context]
 ```
 
-**Recommended next**: `/concerns` — if the top recruiter concerns haven't been addressed yet in the letter.
-
 ---
 
-## State Update
+## Saving
 
-Save the cover letter to `cover-letters/[company-role].md` and update the application record in `context/state.md`:
+After producing the letter, use the AskUserQuestion tool:
+- Question: "Want me to save this to `cover-letters/[company-role].md`? You can also copy it directly if you're pasting into an application form."
+- Options: **Yes, save it** / **No, I'll copy it**
+
+If yes: save to `cover-letters/[company-role].md` and update the application record in `context/state.md`:
 - **Cover Letter**: cover-letters/[company-role].md
 - Add a timestamped note: `[date]: Cover letter drafted.`
+
+If no: update state.md with a timestamped note only: `[date]: Cover letter drafted (not saved to file).`

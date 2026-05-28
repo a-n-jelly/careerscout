@@ -49,6 +49,12 @@ Requires a JD. Without it: "Paste the JD and I'll tailor the resume to it."
 
 7. **Get approval before saving anything** to a file. Do not auto-save bullets or summaries.
 
+8. **After the user approves the changes**, use the AskUserQuestion tool:
+   - Question: "Want me to save the full tailored resume as a markdown file? It's useful as a reference even if you maintain your actual resume in another format (Google Docs, Word, etc.)."
+   - Options: **Yes, save it** / **No thanks**
+
+   If yes: compile the full resume by applying all approved changes to `context/resume.md` and save to `resumes/[company-role].md`. Confirm: "Saved to `resumes/[company-role].md`."
+
 ---
 
 ## Output Schema
@@ -83,4 +89,4 @@ Why: [one sentence — include original only if the contrast materially helps]
 
 ## State Update
 
-Add a timestamped note to the application record in `context/state.md`: `[date]: Resume tailored. Resume Used: resumes/[filename].md`
+Add a timestamped note to the application record in `context/state.md`: `[date]: Resume tailored. Resume Used: resumes/[company-role].md` (or "Resume Used: external" if the user declined to save).
