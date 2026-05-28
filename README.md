@@ -26,6 +26,7 @@ Two loops: the **feed** finds roles worth applying to, the **application loop** 
 
 ### Application loop
 
+Paste a job description and `/assess` gives you a fit verdict, ranked recruiter concerns, and a cover letter angle. From there, `/tailor-resume` adjusts your resume bullets for the role and `/cover-letter` writes the letter in your voice. Every outcome — interview, rejection, offer — gets logged to your pipeline so nothing falls through.
 
 | Command | What it does |
 |---------|--------------|
