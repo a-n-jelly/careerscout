@@ -19,9 +19,10 @@ Requires a job description. If none is present, say: "Paste the job description 
 ## Sequence
 
 1. **Read the JD independently.** Extract: required skills, seniority signals, team context, and any language that reveals what they actually care about vs. what's boilerplate.
-2. **Form your own assessment before asking anything.** Score fit across four dimensions (see below). Don't ask how she feels about the role first — her enthusiasm shouldn't colour the assessment.
-3. **Then ask one question if something is ambiguous** that would materially change the verdict. One question only.
-4. **Output the assessment.**
+2. **Check `context/profile.md`** for a `## Mnookin Doc` section. If present, use it to assess Mnookin fit (see below). If absent, skip that section of the output.
+3. **Form your own assessment before asking anything.** Score fit across four dimensions (see below). Don't ask how the user feels about the role first — their enthusiasm shouldn't colour the assessment.
+4. **Then ask one question if something is ambiguous** that would materially change the verdict. One question only.
+5. **Output the assessment.**
 
 ---
 
@@ -29,10 +30,10 @@ Requires a job description. If none is present, say: "Paste the job description 
 
 Score each as **Strong / Moderate / Weak** with a one-line rationale:
 
-- **Requirement Coverage**: Does her experience hit the stated requirements? Note frameable gaps (can be addressed with narrative) vs. structural gaps (genuinely missing).
+- **Requirement Coverage**: Does their experience hit the stated requirements? Note frameable gaps (can be addressed with narrative) vs. structural gaps (genuinely missing).
 - **Seniority Alignment**: Does the level match? Watch for roles that want IC execution *and* strategic ownership — that's a scope question worth flagging.
-- **Domain Relevance**: How transferable is her background? B2B fintech → consumer fintech is a short bridge. B2B fintech → enterprise SaaS is longer.
-- **Differentiation Potential**: Where does she have a genuine edge over a strong candidate pool? This shapes the cover letter angle.
+- **Domain Relevance**: How transferable is their background? Assess the distance between what they've done and what the role requires.
+- **Differentiation Potential**: Where do they have a genuine edge over a strong candidate pool? This shapes the cover letter angle.
 
 ### Domain gap calibration
 
@@ -40,9 +41,9 @@ Before calling a domain gap structural, check two things:
 
 1. **Is it actually in the JD?** Distinguish between stated requirements and implied domain knowledge. If the JD lists skills and experiences without naming a specific domain, the gap is frameable — not structural. Only call it structural if the JD explicitly requires prior domain experience (e.g. "5+ years in adtech", "experience with DSPs required").
 
-2. **Is the underlying problem transferable?** Map the core competency the role needs to what she's actually done. "Surfacing business intelligence signals for non-technical users" and "building audience insights products for advertisers" are structurally the same problem. The domain label differs; the product challenge doesn't.
+2. **Is the underlying problem transferable?** Map the core competency the role needs to what the candidate has actually done. The domain label may differ; the product challenge may not.
 
-**On quantitative backgrounds:** Economics (First Class) is a legitimate proxy for math/stats. Don't treat it as a gap unless the JD specifically requires a STEM or CS degree. Quantitative reasoning, statistical thinking, and modelling tradeoffs are present in a strong Economics background.
+**On quantitative backgrounds:** A strong quantitative degree (Economics, Statistics, Mathematics) is a legitimate proxy for math/stats. Don't treat it as a gap unless the JD specifically requires a STEM or CS degree.
 
 **On referrals:** A referral upgrades the verdict by at least one tier — it means the resume gets seen by a human, and someone with inside context has already judged the fit worth pursuing. Factor this in before outputting the verdict.
 
@@ -81,7 +82,7 @@ For each Significant+ concern, provide:
 - Differentiation Potential: [Strong / Moderate / Weak] — [rationale]
 
 ### What Lands
-[2-3 specific things from her background that directly match what they're asking for]
+[2-3 specific things from the user's background that directly match what they're asking for]
 
 ### Recruiter Concerns
 
@@ -97,11 +98,37 @@ For each Significant+ concern, provide:
 **Minor**
 1. [concern + one-line counter]
 
+### Mnookin Fit
+[Only include if a ## Mnookin Doc section exists in context/profile.md. See Mnookin Fit section below for how to score this.]
+
 ### Cover Letter Angle
-[The 2-3 themes to lead with, given this specific JD. Not generic — drawn from where her profile overlaps with what they actually care about.]
+[The 2-3 themes to lead with, given this specific JD. Not generic — drawn from where the user's profile overlaps with what they actually care about.]
 ```
 
 **Recommended next**: `/coverletter` — build the letter around the angle above. **Alternative**: `/tailor` if the resume needs targeted rewrites first.
+
+---
+
+## Mnookin Fit
+
+If `context/profile.md` contains a `## Mnookin Doc` section, read it before producing the assessment. Use it to evaluate whether this company and role *feel like the right environment* — not whether the candidate meets the requirements (that's covered in the dimensions above).
+
+Look for signals in the JD, company description, and any public information about the company culture that match or conflict with the stated preferences. Signals to check:
+
+- **Company style**: startup scrappiness vs. process-driven vs. autonomous — does it match their stated preference?
+- **Team structure**: collaborative vs. independent, cross-functional vs. siloed — any flags?
+- **Working environment**: pace, ownership model, how decisions are made
+- **Culture markers**: mission-driven, commercial-first, technical culture, design-led — do they align with what the user values?
+
+Output as one of three ratings with a brief rationale:
+
+- **Mnookin friendly** — the signals available suggest this environment matches their preferences
+- **Mixed signals** — some things fit, some don't — flag specifically what aligns and what doesn't
+- **Likely not Mnookin friendly** — clear mismatches with stated preferences — name them
+
+Note: this is a signal based on limited public information, not a definitive read. The user should verify in the interview process.
+
+If no Mnookin Doc is present, omit this section entirely. Do not mention it.
 
 ---
 
@@ -149,4 +176,4 @@ Don't log one-off context (e.g. "this specific company prefers X"). Only log pat
 
 Entries added during sessions when assessments were corrected or refined.
 
-- **Don't overweight implied domain gaps.** If the JD doesn't explicitly require domain experience, a domain gap is frameable, not structural. Check whether the underlying product problem is transferable before calling it a gap. **Why:** Over-called a Long-Shot on The Trade Desk (adtech) when the JD required data-driven PM skills, not adtech experience specifically. The FullCircl insights work was structurally equivalent. **Apply when:** Any role outside fintech/banking — check the JD requirements literally before penalising for domain distance.
+- **Don't overweight implied domain gaps.** If the JD doesn't explicitly require domain experience, a domain gap is frameable, not structural. Check whether the underlying product problem is transferable before calling it a gap. **Why:** Easy to over-call a Long-Shot when the JD requires transferable skills (e.g. data-driven PM) rather than specific domain experience. **Apply when:** Any role outside the candidate's primary domain — check the JD requirements literally before penalising for domain distance.
