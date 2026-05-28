@@ -73,7 +73,7 @@ The agent reads `context/` at session start — you don't re-explain your backgr
 | File | What it is | Auto-updated? |
 |------|------------|---------------|
 | `resume.md` | Master resume | No |
-| `profile.md` | Off-resume context: stories, gaps, comp targets | Yes |
+| `profile.md` | Off-resume context, Mnookin preferences | Yes — by `/feed-setup` (Mnookin doc), `/assess` (Mnookin calibration) |
 | `bank.md` | Cover letter style, talking points, Q&A, assess calibration | Yes — by `/voice-setup`, `/assess`, `/tailor-resume` |
 | `state.md` | Live application pipeline | Yes |
 | `sources.md` | Feed criteria: roles, locations, comp, deal-breakers | Yes — by `/calibrate` |
