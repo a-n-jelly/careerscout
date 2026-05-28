@@ -21,8 +21,7 @@ Say:
 > | Command | What it does |
 > |---------|--------------|
 > | `/feed` | Score today's fetched roles and write your shortlist |
-> | `/feed add` | Manually add a role you found |
-> | `/feed reject` | Log a role rejection to improve future results |
+> > | `/feed reject` | Log a role rejection to improve future results |
 > | `/calibrate` | Tune feed scoring based on your reactions |
 > | `/retro` | Periodic review — rejection patterns, pipeline health |
 >

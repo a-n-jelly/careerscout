@@ -70,7 +70,6 @@ Full protocols in `.claude/commands/`. Brief reference:
 | `/feed` | Score today's fetched roles, write shortlist |
 | `/calibrate` | Tune feed scoring from reactions |
 | `/feed reject` | Log a role rejection |
-| `/feed add` | Manually add a role |
 | `/retro` | Periodic pipeline review |
 | `/assess` | Fit verdict, recruiter concerns, and Mnookin fit |
 | `/tailor-resume` | Tailor resume to a JD |

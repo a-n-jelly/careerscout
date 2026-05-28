@@ -19,7 +19,6 @@ Two loops: the **feed** finds roles worth applying to, the **application loop** 
 | `/feed` | Score today's fetched roles and write the shortlist |
 | `/calibrate` | Tune scoring from your feed reactions — updates sources.md, differentiators.md, and learnings.md |
 | `/feed reject` | Log why a role wasn't right — teaches the feed to stop surfacing similar ones |
-| `/feed add` | Inject a role you found yourself so it gets scored the same way |
 | `/retro` | Periodic review — rejection patterns, pipeline health |
 
 > The first few feeds will need calibration. Run `/calibrate` after each early run until the signal feels right — usually 3-5 runs.
