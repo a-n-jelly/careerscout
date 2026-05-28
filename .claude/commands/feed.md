@@ -49,7 +49,7 @@ Score each role on four dimensions (0–3 each). Total 0–12.
 
 - **Edge (0–3)** — do the differentiators in `context/differentiators.md` give a specific advantage for this role? Use the "Notes for scoring" section in that file.
 
-- **Sustain (0–3)** — location first, then comp. Location is a hard gate: if the role is not Seattle, not remote/US-remote, or requires relocation — Sustain = 0, full stop, regardless of comp. If location passes: at/above target base ($180K+) = 3. At floor ($150K) = 1. Below floor or comp not listed but location is good = 2. No location data = 0.
+- **Sustain (0–3)** — location first, then comp. Location is a hard gate: if the role doesn't match the user's location criteria in `context/sources.md` (city, remote preference, relocation) — Sustain = 0, full stop, regardless of comp. If location passes: at/above target base = 3. At floor = 1. Below floor or comp not listed but location is good = 2. No location data = 0. Read comp band from `context/sources.md`.
 
 **Recommend thresholds — use the `level` field from today.json:**
 
