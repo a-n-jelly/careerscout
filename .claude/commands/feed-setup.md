@@ -39,44 +39,59 @@ Show the draft to the user. Say:
 
 Wait for confirmation or corrections. Apply any changes. The user can add, remove, or reword queries freely.
 
-### Step 3 — Ask the remaining questions
+### Step 3 — Fill in the gaps with structured questions
 
-Ask these one at a time, in order. Wait for each answer before moving to the next. Do not bundle questions.
+Use the **AskUserQuestion tool** for each group below. Send each group as a single tool call — don't ask one question at a time.
 
-**Location & commute**
-1. What's your primary city, and what's your location preference — remote, hybrid, or on-site?
-2. *(If hybrid or on-site)* What's your maximum commute — distance or time?
-3. Are you open to relocating?
-4. *(If open to remote)* Any cities or states to exclude from remote results? (e.g. roles listed in New York or Chicago that you wouldn't consider)
+---
 
-**Employment type**
-4. Are you looking for full-time roles only, or are you open to contract or fractional work?
+**Group 1 — Location**
 
-**Work authorisation**
-5. *(Skip if already confirmed from resume)* Do you require visa sponsorship?
+Ask:
+- "Where are you based, and what's your work setup preference?" — Options: Fully remote / Hybrid (few days/week) / Open to on-site / Flexible
+- "Are you open to relocating for the right role?" — Options: Yes / No / Possibly
 
-**Compensation**
-6. What's your floor — the minimum base you'd accept?
-7. What's your target — the base you're genuinely aiming for?
-8. What's your reach — what you'd be thrilled with?
-9. Any comp structure preferences — base-heavy vs. equity-heavy, cash bonus, RSUs?
-10. Any benefits that are must-haves or deal-breakers? (e.g. PTO, parental leave, health coverage, 401k match, visa sponsorship)
+If hybrid or on-site: follow up with a single free-text question asking maximum commute distance or time.
 
-**Companies & filters**
-11. Any specific companies you want to watch directly?
-12. Any stage or size preferences — early stage, growth, public, enterprise?
-13. What are your deal-breakers — role types, domains, or company types to exclude entirely?
+If remote or hybrid: follow up with a single free-text question: "Any cities or states to exclude from remote results? (e.g. you wouldn't consider roles based in New York or Chicago)" — leave blank to skip.
 
-**Timeline**
-14. Are you actively looking now, or passively exploring?
+---
 
-**Feed settings**
-15. How many results do you want per run — 10, 25, 50?
-16. How fresh — roles posted in the last 24, 48, or 72 hours?
+**Group 2 — Employment & authorisation**
 
-**Scoring documents**
-17. Do you have a Mnookin doc? If yes, paste it or give the file path — it'll be used for scoring and will supplement or override what you've entered above.
-18. Do you have a CMF (Company/Market Fit doc)? Same — paste or path, or skip.
+Ask (skip visa question if already confirmed from resume):
+- "What type of work are you looking for?" — Options: Full-time only / Open to contract / Open to fractional / Any
+- "Do you require visa sponsorship?" — Options: Yes, required / No, not required
+
+---
+
+**Group 3 — Compensation**
+
+Ask:
+- "What's your base salary floor — the minimum you'd accept?" — Options: Under $100k / $100k–$130k / $130k–$160k / $160k–$200k / $200k+ / Other
+- "What's your target base?" — same options
+- "Any comp structure preferences?" — Options: Base-heavy / Equity-heavy / Balanced / No preference
+- "Any benefits that are must-haves?" — multiSelect: Health coverage / 401k match / Parental leave / Generous PTO / Visa sponsorship / None / Other
+
+---
+
+**Group 4 — Companies & targeting**
+
+Ask:
+- "Any stage or size preference?" — Options: Early stage / Growth / Public / No preference
+- "Are you actively looking or passively exploring?" — Options: Actively looking / Passively exploring
+
+Then ask two free-text follow-ups (separately, not bundled):
+1. "Any specific companies you want to watch directly? List them and I'll add them to your priority list."
+2. "Any deal-breakers — role types, domains, or company types to exclude entirely?"
+
+---
+
+**Group 5 — Feed settings**
+
+Ask:
+- "How many results per feed run?" — Options: 10 / 25 (recommended) / 50
+- "How fresh should roles be?" — Options: Last 24 hours / Last 48 hours / Last 72 hours (recommended) / Last week
 
 ### Step 3b — Draft differentiators.md
 
