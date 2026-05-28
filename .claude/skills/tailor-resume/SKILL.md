@@ -40,7 +40,7 @@ Requires a JD. Without it: "Paste the JD and I'll tailor the resume to it."
 4. **Identify which bullets need changing.** Don't rewrite everything — focus on:
    - Bullets most relevant to the JD that are underselling
    - Bullets using the wrong framing for this role type (e.g., B2B language for a consumer role)
-   - Bullets missing entirely for a JD priority Anjali can actually speak to
+   - Bullets missing entirely for a JD priority the user can actually speak to
 
 5. **Form your own view of what's weak** before asking for context. Ask one targeted question only if reframing genuinely requires information you don't have.
 
