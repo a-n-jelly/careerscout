@@ -29,8 +29,9 @@ Say:
 > **Applying**
 > | Command | What it does |
 > |---------|--------------|
+> | `/improve-resume` | Review and strengthen your master resume |
 > | `/assess` | Fit verdict and recruiter concerns for a role |
-> | `/tailor` | Tailor your resume bullets and summary to a JD |
+> | `/tailor-resume` | Tailor your resume bullets and summary to a JD |
 > | `/coverletter` | Write a cover letter in your voice |
 > | `/concerns` | Anticipate recruiter concerns with counter-framings |
 >

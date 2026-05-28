@@ -75,6 +75,7 @@ Full protocols in `.claude/commands/`. Brief reference:
 | `/assess` | Fit verdict and recruiter concerns |
 | `/tailor` | Tailor resume to a JD |
 | `/coverletter` | Write a cover letter in the user's voice |
+| `/improve-resume` | Review and strengthen the master resume — tighten bullets, sharpen the summary, flag weak spots |
 | `/concerns` | Anticipate recruiter concerns with counter-framings |
 | `/notes` | Capture feedback or call notes |
 | `/update` | Log an event — interview, rejection, offer |
