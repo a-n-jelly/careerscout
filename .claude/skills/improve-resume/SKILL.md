@@ -9,6 +9,8 @@ description: >-
 
 # /improve-resume — Resume Review & Strengthening
 
+> ⚠️ **Untested** — this skill has not been validated in real sessions. Use with caution and run `/calibrate` or give feedback if the output feels off.
+
 Reviews the master resume critically and suggests concrete improvements. Output is specific and actionable — not generic advice.
 
 ---

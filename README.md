@@ -53,6 +53,7 @@ flowchart LR
 
 | Command | What it does |
 |---------|--------------|
+| `/improve-resume` | Review and strengthen your master resume _(untested — use with caution)_ |
 | `/assess` | Fit verdict and recruiter concerns ranked by severity |
 | `/tailor` | Tailor your resume to the JD |
 | `/coverletter` | Write a cover letter in your voice |
