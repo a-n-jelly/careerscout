@@ -315,13 +315,18 @@ Use `feed-agent/my_filters.example.json` as a reference for the file format.
 
 Tell the user:
 
-> "Feed configured. Run this now to fetch today's roles, then come back and run `/feed` to score them:"
+> "Feed configured. Run these three commands now to fetch, filter, and enrich today's roles — then come back and run `/feed` to score them:"
 
 ```bash
-python3 feed-agent/fetch.py
+python3 feed-agent/fetch.py && python3 feed-agent/filter_roles.py && python3 feed-agent/enrich.py
 ```
 
-Wait for them to confirm it ran before moving on.
+Explain briefly:
+- `fetch.py` scrapes the job boards and writes raw results
+- `filter_roles.py` removes out-of-scope roles using your personal rules from `my_filters.json`
+- `enrich.py` fetches full job descriptions for roles that need them
+
+Wait for them to confirm all three ran before moving on. If any step fails, help them debug before continuing.
 
 ### Step 6 — Set up the daily scheduler
 
