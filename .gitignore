@@ -18,13 +18,13 @@ resumes/
 # Generated feed data
 feed-agent/seen.json
 feed-agent/today.json
+feed-agent/today.json.bak
+feed-agent/pre_filtered.json
 feed-agent/dismissed.json
 feed-agent/run.log
-feed-agent/feed.md
-feed-agent/feed.md
 feed-agent/archive/
 feed-agent/learnings.md
-feed/feed.md
+feed/daily-feed-output.md
 feed/archive/
 
 # User-specific config (each user creates their own from config.sh.template)
