@@ -60,6 +60,9 @@ echo "Fetching roles..." >> "$LOG"
 echo "Filtering dismissed roles..." >> "$LOG"
 "$PYTHON" feed-agent/filter_dismissed.py >> "$LOG" 2>&1
 
+echo "Pre-filtering out-of-scope roles..." >> "$LOG"
+"$PYTHON" feed-agent/filter_roles.py >> "$LOG" 2>&1
+
 echo "Enriching descriptions..." >> "$LOG"
 "$PYTHON" feed-agent/enrich.py >> "$LOG" 2>&1
 

@@ -285,6 +285,37 @@ def matches_rejected(job, rejected):
     return False
 
 
+# ── Helpers ──────────────────────────────────────────────────────────────────
+
+def _format_comp(row):
+    """Format JobSpy salary fields into a human-readable string, or return ''."""
+    try:
+        lo  = row.get("min_amount")
+        hi  = row.get("max_amount")
+        interval = str(row.get("interval") or "").lower()
+
+        if not lo and not hi:
+            return ""
+
+        def fmt(n):
+            if n is None:
+                return None
+            n = float(n)
+            if interval in ("hourly", "hour"):
+                return f"${n:.0f}/hr"
+            # Convert hourly that slipped through as yearly
+            return f"${n/1000:.0f}K" if n >= 1000 else f"${n:.0f}"
+
+        lo_s = fmt(lo)
+        hi_s = fmt(hi)
+
+        if lo_s and hi_s:
+            return f"{lo_s}–{hi_s}"
+        return lo_s or hi_s or ""
+    except Exception:
+        return ""
+
+
 # ── Fetch ─────────────────────────────────────────────────────────────────────
 
 def run_jobspy(query, location_config, feed_settings):
@@ -322,6 +353,7 @@ def run_jobspy(query, location_config, feed_settings):
                 "description": str(row.get("description", "") or "")[:3000],
                 "source":      str(row.get("site", "") or ""),
                 "date_posted": str(row.get("date_posted", "") or ""),
+                "compensation": _format_comp(row),
             })
         return results
     except Exception as e:

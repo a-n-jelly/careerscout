@@ -17,11 +17,12 @@ description: >-
 
 **Inputs:**
 
-- `feed-agent/today.json` — roles fetched this morning
+- `feed-agent/today.json` — roles surviving pre-filter (non-PM roles, international locations, known B2B companies, and learnings-matched patterns already removed by `filter_roles.py`)
+- `feed-agent/pre_filtered.json` — roles removed by pre-filter (exists if filter_roles.py ran); used only for the skipped count in the output header
 - `context/sources.md` — target companies, domain preferences, avoid list, location, comp band
 - `context/differentiators.md` — your edges; used directly for Edge scoring
 - `context/state.md` — pipeline roles already in progress (skip these)
-- `feed-agent/learnings.md` — rejected patterns and injected roles
+- `feed-agent/learnings.md` — rejected patterns and injected roles (already applied by filter_roles.py; check for any new entries not yet caught)
 
 **Do not load:** `resume.md`, `profile.md`, or `storybank.md`. Those belong in `/assess`.
 
@@ -40,7 +41,7 @@ Load `feed-agent/today.json`. Compare the `fetched_date` field against today's d
 
 If they don't match: **stop immediately.** Say so and ask whether to trigger `fetch.py` first. Do not score stale data.
 
-If they match: proceed.
+If they match: check whether `feed-agent/pre_filtered.json` exists. If it does, note its length — this is the pre-filter count to include in the output header. If it doesn't exist (filter_roles.py hasn't run), proceed normally; the skipped count will only reflect Claude's own scoring decisions.
 
 ---
 
@@ -58,9 +59,9 @@ Skip if it's the placeholder ("No feed run yet").
 
 For each role that passes initial filtering:
 
-- If `description` is non-empty: extract the top 4–5 requirements directly from the description text.
-- If `description_available` is `false` (LinkedIn-only roles enrich.py couldn't reach): write "Requirements not available — open link to review." Do not WebFetch.
-- If `description` is empty and `description_available` is not `false` (Ashby roles or any edge case enrich.py skipped): attempt one WebFetch. If it returns no content, write "Requirements not available — open link to review."
+- If `description` is non-empty: extract the top 4–5 **candidate requirements** — what the candidate must bring, not what the job will involve. Look for sections labelled "Qualifications", "Requirements", "What we're looking for", "What you'll bring", "Minimum qualifications", "Basic qualifications", "Who you are." Extract from those sections only. Do **not** pull from "Responsibilities", "What you'll do", "Key responsibilities", or "About the role" sections.
+- If `description_available` is `false` (LinkedIn-only roles enrich.py couldn't reach): write "Requirements not available — open link to review." Do not WebFetch. **Still score the role** — use title and company context for the Requirements dimension; default to 2 unless the title signals a clear gap.
+- If `description` is empty and `description_available` is not `false` (Ashby roles or any edge case enrich.py skipped): attempt one WebFetch. If it returns no content, write "Requirements not available — open link to review." **Still score the role** using title and company context.
 
 ---
 
@@ -116,7 +117,7 @@ Tag `above_target` roles `[ABOVE LEVEL]`. Tag Priority Company roles `[TARGET]`.
 ```markdown
 # Job Feed — [DATE]
 
-[N recommended] · [N stretch] · [N skipped]
+[N recommended] · [N stretch] · [N skipped] ([N pre-filtered] auto-removed before scoring)
 
 **Fit scoring:** Match (domain fit) / Requirements (stated requirements met) / Edge (differentiator advantage) / Sustain (comp + location). Each 0–3, total 0–12. Target-level roles recommend at ≥7; Priority Companies [TARGET] at ≥6. Above-level roles appear in Stretch only.
 

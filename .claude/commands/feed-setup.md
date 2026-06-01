@@ -312,13 +312,19 @@ If yes, first detect the OS by running `uname -s`. Then follow the appropriate p
 
 #### macOS (`uname -s` returns `Darwin`)
 
-1. Make the run script executable:
+1. Ask the user what time they want the feed to run:
+
+> "The feed runs at **8am by default**. On macOS, if your Mac is asleep at that time it'll run automatically when you wake it — so you'll always get fresh roles, just maybe a bit later. Want to keep 8am or set a different time?"
+
+Accept any hour (e.g. "7am", "9", "7:30"). Default to 8:00 if they say yes/keep/default. Parse to Hour and Minute integers for the plist.
+
+2. Make the run script executable:
 
 ```bash
 chmod +x feed-agent/run-daily.sh
 ```
 
-2. Set up your local config. Run `which claude` to find your claude binary path, then:
+3. Set up your local config. Run `which claude` to find your claude binary path, then:
 
 ```bash
 cp feed-agent/config.sh.template feed-agent/config.sh
@@ -326,7 +332,7 @@ cp feed-agent/config.sh.template feed-agent/config.sh
 
 Open `feed-agent/config.sh` and set `CLAUDE_BIN` to the path from `which claude`. This file is gitignored — it stays on your machine only.
 
-3. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.[username].jobfeed.plist`:
+4. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.[username].jobfeed.plist` using the Hour and Minute from step 1:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -358,20 +364,24 @@ Open `feed-agent/config.sh` and set `CLAUDE_BIN` to the path from `which claude`
 </plist>
 ```
 
-4. Load it: `launchctl load ~/Library/LaunchAgents/com.[username].jobfeed.plist`
+5. Load it: `launchctl load ~/Library/LaunchAgents/com.[username].jobfeed.plist`
 
-5. **Grant Full Disk Access to bash** — required for launchd to read files in ~/Documents:
+6. **Grant Full Disk Access to bash** — required for launchd to read files in ~/Documents:
    - Open **System Settings → Privacy & Security → Full Disk Access**
    - Click **+**, then press **⌘⇧G**, type `/bin/bash`, and click Open
    - You'll see bash added to the list — toggle it on if it isn't already
 
-6. Confirm: `launchctl list | grep jobfeed` — should show the job listed.
+7. Confirm: `launchctl list | grep jobfeed` — should show the job listed.
 
-> The scheduler fires at 8am daily. If your machine is asleep at 8am, it runs automatically when you wake it — no manual trigger needed.
+> The scheduler fires at [chosen time] daily. If your Mac is asleep at that time, it runs automatically when you wake it — no manual trigger needed.
 
 ---
 
 #### Linux (`uname -s` returns `Linux`)
+
+Ask the user what time they want the feed to run (default 8am). Note:
+
+> "On Linux, cron runs at the exact scheduled time only — if your machine is off or sleeping at that time, the run is skipped (unlike macOS, which catches up on wake)."
 
 1. Check if `feed-agent/run-daily.sh` exists. If not, create it (same content as macOS above but remove the `osascript` trap line — it won't work on Linux).
 
@@ -379,10 +389,10 @@ Make it executable: `chmod +x feed-agent/run-daily.sh`
 
 2. Open the crontab editor: `crontab -e`
 
-3. Add this line (replacing the path with the actual absolute path):
+3. Add this line using the chosen hour/minute (replacing the path with the actual absolute path):
 
 ```
-0 8 * * * /bin/bash /home/[username]/Documents/Claude/agents/career-coach/feed-agent/run-daily.sh
+[MINUTE] [HOUR] * * * /bin/bash /home/[username]/Documents/Claude/agents/career-coach/feed-agent/run-daily.sh
 ```
 
 4. Save and exit. Confirm: `crontab -l` — should show the entry.
