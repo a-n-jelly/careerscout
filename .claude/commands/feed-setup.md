@@ -309,7 +309,7 @@ Show the generated file to the user:
 
 > "I've created your personal filter rules at `feed-agent/my_filters.json`. This file is gitignored — it lives on your machine only. It removes clearly out-of-scope roles before Claude scores them, so the feed focuses on viable candidates. `/calibrate` will add to it as you react to roles over time."
 
-Use `feed-agent/my_filters.example.json` as a reference for the file format.
+Use `feed-agent/my_filters.example.json` as a reference for the file format, then **delete it** — it's no longer needed once `my_filters.json` exists.
 
 ### Step 5 — First fetch
 
