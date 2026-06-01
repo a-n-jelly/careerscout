@@ -2,7 +2,7 @@
 """
 feed-agent/fetch.py — Daily job fetch engine
 
-Reads sources.md → runs JobSpy → hits ATS endpoints → dedupes → writes today.json
+Reads sources.md → runs JobSpy → hits ATS endpoints → dedupes → writes today_raw.json
 Run from career-coach/ root: python3 feed-agent/fetch.py
 """
 
@@ -34,7 +34,7 @@ SOURCES      = BASE / "context" / "sources.md"
 LEARNINGS    = FEED_AGENT / "learnings.md"
 SEEN_JSON    = FEED_AGENT / "seen.json"
 DISMISSED_JSON = FEED_AGENT / "dismissed.json"
-TODAY_JSON   = FEED_AGENT / "today.json"
+TODAY_JSON   = FEED_AGENT / "today_raw.json"
 
 STAFFING_AGENCIES = {
     "akkodis", "spectraforce", "impax recruitment", "hays", "robert half",
@@ -558,7 +558,7 @@ def main():
     print(f"  Rejected (learnings)  : {stats['rejected']}")
     print(f"  Dupes (within run)    : {stats['dupes']}")
     print(f"  Reposts (flagged)     : {stats['reposts']}")
-    print(f"\nWrote {len(filtered)} roles → today.json")
+    print(f"\nWrote {len(filtered)} roles → today_raw.json")
     print(f"Seen index: {len(seen)} total")
 
 

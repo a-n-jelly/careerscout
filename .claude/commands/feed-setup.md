@@ -288,6 +288,29 @@ Benefits: [from Q10]
 
 After writing `context/sources.md`, **delete `context/sources.example.md`** — it's no longer needed.
 
+### Step 4b — Generate my_filters.json
+
+Create `feed-agent/my_filters.json` from what you now know about the user. This file controls the fast pre-filter that runs before Claude scores anything — it removes clearly out-of-scope roles by title pattern, location, and company.
+
+Generate four sections:
+
+1. **`non_role_patterns`** — regex patterns that identify the wrong role type for this user. For a PM searcher, this means software engineers, recruiters, data scientists, interns, etc. For an engineering manager, it means PM roles. Infer from the user's target role.
+
+2. **`hard_no_title_patterns`** — the "Hard no" domains from Step 2 (Domain Preferences), converted to regex patterns. Each entry needs `"pattern"` and `"reason"`. Example: if "fraud domain PM" is a hard no, add `{"pattern": "\\bfraud\\b", "reason": "fraud domain"}`.
+
+3. **`skip_companies`** — start empty `[]`. The user hasn't seen any feeds yet, so there are no known-bad companies. `/calibrate` will populate this over time.
+
+4. **`exclude_locations`** — regex patterns for locations to exclude. Derive from the user's location config:
+   - If US-only (primary city in the US, accept remote = yes): add standard international exclusions (UK, Ireland, Canada, EU, APAC, EMEA)
+   - If UK-only: add US states, APAC, etc.
+   - If open to international: leave empty `[]`
+
+Show the generated file to the user:
+
+> "I've created your personal filter rules at `feed-agent/my_filters.json`. This file is gitignored — it lives on your machine only. It removes clearly out-of-scope roles before Claude scores them, so the feed focuses on viable candidates. `/calibrate` will add to it as you react to roles over time."
+
+Use `feed-agent/my_filters.example.json` as a reference for the file format.
+
 ### Step 5 — First fetch
 
 Tell the user:

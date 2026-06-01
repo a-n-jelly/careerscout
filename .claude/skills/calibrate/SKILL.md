@@ -107,8 +107,9 @@ Go role by role only until the cause is clear — not all N roles.
 
 | What the user says | Likely root cause | File to fix |
 |--------------------|-------------------|-------------|
-| "Too many [X] type roles appearing" | Missing rejection pattern | `learnings.md` Rejected |
-| "[Company] keeps showing up — I'd never apply" | Company-level rejection | `learnings.md` Rejected |
+| "Too many [X] type roles appearing" (domain/title pattern) | Missing hard-no title pattern | `my_filters.json` hard_no_title_patterns |
+| "[Company] keeps showing up — I'd never apply" | Company-level skip rule | `my_filters.json` skip_companies |
+| "This specific role at this company was wrong" | One-off rejection | `learnings.md` Rejected |
 | "Edge scores too high/low for [role type]" | Differentiator calibration off | `differentiators.md` |
 | "Requirements scores feel wrong for [role type]" | Target signals or scoring brief | `sources.md` |
 | "[Company] isn't appearing but should be" | Missing from priority companies or ATS table | `sources.md` |
@@ -167,7 +168,8 @@ feed:
 
 ## What /calibrate can change
 
-- `learnings.md` — rejected patterns, injected roles
+- `feed-agent/my_filters.json` — hard-no title patterns, company skip list, excluded locations
+- `learnings.md` — rejected patterns (specific company+title combos), injected roles
 - `sources.md` — avoid section, target signals, priority companies, comp band
 - `differentiators.md` — edge scoring notes, key differentiator bullets
 

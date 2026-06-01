@@ -57,10 +57,7 @@ cd "$AGENT_DIR"
 echo "Fetching roles..." >> "$LOG"
 "$PYTHON" feed-agent/fetch.py >> "$LOG" 2>&1
 
-echo "Filtering dismissed roles..." >> "$LOG"
-"$PYTHON" feed-agent/filter_dismissed.py >> "$LOG" 2>&1
-
-echo "Pre-filtering out-of-scope roles..." >> "$LOG"
+echo "Filtering and pre-filtering roles..." >> "$LOG"
 "$PYTHON" feed-agent/filter_roles.py >> "$LOG" 2>&1
 
 echo "Enriching descriptions..." >> "$LOG"

@@ -17,7 +17,7 @@ description: >-
 
 **Inputs:**
 
-- `feed-agent/today.json` — roles surviving pre-filter (non-PM roles, international locations, known B2B companies, and learnings-matched patterns already removed by `filter_roles.py`)
+- `feed-agent/today.json` — roles surviving pre-filter (wrong role types, excluded locations, known skip companies, hard-no domain titles, and learnings-matched patterns already removed by `filter_roles.py`, which reads personal rules from `feed-agent/my_filters.json`)
 - `feed-agent/pre_filtered.json` — roles removed by pre-filter (exists if filter_roles.py ran); used only for the skipped count in the output header
 - `context/sources.md` — target companies, domain preferences, avoid list, location, comp band
 - `context/differentiators.md` — your edges; used directly for Edge scoring
