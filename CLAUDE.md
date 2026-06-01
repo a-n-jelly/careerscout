@@ -56,8 +56,9 @@ If no explicit command is given, use first match:
 3. Job description pasted → `/assess`
 4. Recruiter feedback or call notes pasted → `/notes`
 5. Outcome mentioned ("interview scheduled", "got rejected", "got an offer") → `/update`
-6. Company name only → ask if applying or just tracking
-7. Otherwise → ask what they're working on
+6. User asks about today's jobs / feed ("what's in the feed", "show me today's roles", "any good jobs today", "what did the feed find") → check `feed/daily-feed-output.md`. If dated today, show the feed summary (recommended count, top 1-2 roles with why-line). Do not re-run `/feed`. If not dated today, say the feed hasn't run yet and suggest running fetch.py then `/feed`.
+7. Company name only → ask if applying or just tracking
+8. Otherwise → ask what they're working on
 
 ---
 
