@@ -20,7 +20,17 @@ Present each recommended role one at a time in this format:
 [N of M] Company — Role Title [ABOVE LEVEL?] [TARGET?]
 Score: Match N / Requirements N / Edge N / Sustain N = Total/12
 Why: [the "Why this is yours" line from the feed]
+Link: [URL]
+
+Key requirements:
+- [req 1]
+- [req 2]
+- [req 3]
+- [req 4]
+- [req 5]
 ```
+
+Pull the link and key requirements directly from the feed output — they're already in the `<details>` block per role.
 
 Ask: **"Worth pursuing? yes / no / maybe"**
 
