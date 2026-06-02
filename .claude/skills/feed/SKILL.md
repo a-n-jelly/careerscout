@@ -1,10 +1,11 @@
 ---
 name: feed
 description: >-
-  Daily job feed scoring. Use when the user runs /feed or asks to score
-  today's roles. Reads today.json, scores against targeting criteria, and
-  writes feed/daily-feed-output.md. Do not use for assessing a specific role
-  — that's /assess.
+  Daily job feed scoring. Use when the user runs /feed, asks to score today's
+  roles, or asks to see today's jobs ("what's in the feed", "show me today's
+  roles", "any good jobs today", "what did the feed find"). If the feed has
+  already been scored today, show the existing output rather than re-scoring.
+  Do not use for assessing a specific role — that's /assess.
 ---
 
 # /feed — Daily Job Feed
@@ -37,9 +38,15 @@ description: >-
 
 ## Step 1 — Freshness check
 
-Load `feed-agent/today.json`. Compare the `fetched_date` field against today's date.
+**Already scored today?** Check whether `feed/daily-feed-output.md` exists and is dated today (look for `# Job Feed — [today's date]` in the header).
 
-If they don't match: **stop immediately.** Say so and ask whether to trigger `fetch.py` first. Do not score stale data.
+If yes and the user asked to *see* the feed (not explicitly re-score it): show the existing output — summary line, recommended roles, and the calibration nudge. Do not re-score. Say: "Here's today's feed (already scored):" then display it.
+
+If the user explicitly asked to re-run or re-score (`/feed` command with intent to refresh): proceed with full scoring below, which will overwrite the existing output.
+
+**Fetch data check:** Load `feed-agent/today.json`. Compare the `fetched_date` field against today's date.
+
+If they don't match: **stop immediately.** Say so and ask whether to trigger the fetch pipeline first (`python3 feed-agent/fetch.py && python3 feed-agent/filter_roles.py && python3 feed-agent/enrich.py`). Do not score stale data.
 
 If they match: check whether `feed-agent/pre_filtered.json` exists. If it does, note its length — this is the pre-filter count to include in the output header. If it doesn't exist (filter_roles.py hasn't run), proceed normally; the skipped count will only reflect Claude's own scoring decisions.
 
