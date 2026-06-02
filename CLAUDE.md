@@ -18,18 +18,16 @@ When instructions compete, follow this order:
 
 ## Session Start
 
-1. Check if `context/resume.md` exists. If not, stop and ask for it before anything else.
-2. Read `context/state.md`, `context/resume.md`, `context/profile.md`, and `context/bank.md`.
-3. Check `feed/daily-feed-output.md`. If the date in the header matches today, show a brief feed summary before anything else:
-   - Recommended count and top 1-2 roles (title, company, "Why this is yours" line)
-   - Then move to pipeline recommendations below
-   - If the feed date doesn't match today: skip the summary, don't mention it
-4. Open with a prescriptive recommendation based on what's in progress:
+1. Read `context/state.md`.
+2. Check `feed/daily-feed-output.md`. If dated today, show a brief feed summary: recommended count and top 1-2 roles (title, company, "Why this is yours" line). If not dated today, skip — don't mention it.
+3. Open with a prescriptive recommendation based on what's in `state.md`:
    - Application has a JD but no cover letter → suggest `/cover-letter`
    - Application has no fit assessment → suggest `/assess`
    - Resume not tailored for a role → suggest `/tailor-resume`
-   - Nothing active, resume exists → suggest `/feed-review` if today's feed was shown, otherwise say "Nothing in progress — paste a JD to assess it."
-   - Nothing active, no resume → run `/setup`
+   - Nothing active → suggest `/feed-review` if today's feed was shown, otherwise "Nothing in progress — paste a JD to assess it."
+   - No `context/resume.md` → run `/setup`
+
+Read `resume.md`, `profile.md`, and `bank.md` only when a task needs them — not upfront.
 
 **Example**: "You have 2 active applications. `stripe-pm-payments` has a JD but no cover letter yet — that's the highest-leverage move. Want to start there?"
 
