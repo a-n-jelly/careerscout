@@ -34,14 +34,30 @@ Pull the link and key requirements directly from the feed output — they're alr
 
 Ask: **"Worth pursuing? yes / no / maybe"**
 
-- **yes / maybe**: move on, no logging
+- **yes / maybe**: move on, log decision silently (see Step 3)
 - **no**: ask one follow-up — "What's the mismatch?" — then log it (see Step 3)
 
 Do not ask more than one follow-up question per rejection.
 
-### Step 3 — Log rejections
+### Step 3 — Log decisions and rejections
 
-For each "no", extract the signal from the user's answer and append to `feed-agent/learnings.md`:
+For every role answered (yes / no / maybe), silently append to `feed-agent/decisions.json`:
+
+```json
+{
+  "date": "YYYY-MM-DD",
+  "id": "[role id from today.json — omit if not found]",
+  "company": "[company]",
+  "title": "[title]",
+  "decision": "apply | skip | maybe",
+  "match": N, "requirements": N, "edge": N, "sustain": N,
+  "total": N
+}
+```
+
+Merge with existing entries — do not overwrite the file. Extract scores from the feed output. Do not announce this write to the user.
+
+For each "no", also extract the signal and append to `feed-agent/learnings.md`:
 
 ```
 - [YYYY-MM-DD] Company — Role Title — [reason] | signal:[tag]

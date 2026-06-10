@@ -91,11 +91,16 @@ def matches_rejected_pattern(role, rejected_patterns):
     return None
 
 
+def _normalize(s):
+    """Collapse separators so 'PM, Infrastructure' matches pattern 'pm infrastructure'."""
+    return re.sub(r'[\s,\-–—]+', ' ', s.lower()).strip()
+
+
 def matches_any(text, patterns):
-    """Return True if text matches any pattern in the list."""
-    t = text.lower()
+    """Return True if text contains any pattern as a case-insensitive substring."""
+    t = _normalize(text)
     for p in patterns:
-        if re.search(p, t):
+        if _normalize(p) in t:
             return True
     return False
 
@@ -115,12 +120,12 @@ def is_international(location, patterns):
 
 
 def is_hard_no_domain(title, patterns):
-    """Returns reason string if title matches a hard-no pattern, else None."""
+    """Returns reason string if title contains a hard-no text entry, else None."""
     if not patterns:
         return None
-    t = title.lower()
+    t = _normalize(title)
     for entry in patterns:
-        if re.search(entry["pattern"], t):
+        if _normalize(entry["text"]) in t:
             return entry["reason"]
     return None
 

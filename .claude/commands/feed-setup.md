@@ -121,12 +121,17 @@ From `resume.md` and the Mnookin doc (if provided), extract:
 1. **Key edges** — what this candidate has that most candidates don't. Look for: scale signals, cross-functional complexity, ownership depth, domain intersections, unusual credentials. Write 3–4 bullets, each with a "why it matters" clause.
 2. **Target level** — infer from their most recent title and trajectory
 3. **Positioning summary** — one paragraph: who they are, what makes them a distinct candidate, what they're targeting
+4. **Notes for scoring** — explicit Edge triggers for the feed to use when scoring. Generate two lists:
+   - `Edge = 3 if the role involves any of:` — 3–5 specific product types, named partners, domains, or scale signals from the candidate's background
+   - `Edge = 1 or below if the role is primarily:` — 2–4 known thin-transfer areas or hard gap domains
 
 Show the draft to the user:
 
-> "Here's your differentiators profile — this is what `/feed` will use to score the Edge dimension. Does this reflect how you'd position yourself?"
+> "Here's your differentiators profile — this is what `/feed` will use to score the Edge dimension. Does this reflect how you'd position yourself? The 'Notes for scoring' section is the trigger list the feed reads directly — the more specific it is, the more consistent your Edge scores will be."
 
 Wait for confirmation or edits. Apply changes. Write to `context/differentiators.md`.
+
+The differentiators.md file should include these sections in order: `## Key edges`, `## Target level`, `## Positioning summary`, `## Notes for scoring`, `## Hard gaps`.
 
 ### Step 3c — Capture hard gaps
 
@@ -292,16 +297,16 @@ After writing `context/sources.md`, **delete `context/sources.example.md`** — 
 
 Create `feed-agent/my_filters.json` from what you now know about the user. This file controls the fast pre-filter that runs before Claude scores anything — it removes clearly out-of-scope roles by title pattern, location, and company.
 
-Generate four sections:
+Generate four sections. All text matching is **plain case-insensitive substring** — no regex. Commas and hyphens are ignored when matching, so `"pm infrastructure"` also matches "PM, Infrastructure" and "PM – Infrastructure".
 
-1. **`non_role_patterns`** — regex patterns that identify the wrong role type for this user. For a PM searcher, this means software engineers, recruiters, data scientists, interns, etc. For an engineering manager, it means PM roles. Infer from the user's target role.
+1. **`non_role_patterns`** — plain strings that identify the wrong role type for this user. For a PM searcher, this means software engineers, recruiters, data scientists, interns, etc. For an engineering manager, it means PM roles. Infer from the user's target role. Each entry is just a string, e.g. `"software engineer"`, `"data scientist"`, `"recruiter"`.
 
-2. **`hard_no_title_patterns`** — the "Hard no" domains from Step 2 (Domain Preferences), converted to regex patterns. Each entry needs `"pattern"` and `"reason"`. Example: if "fraud domain PM" is a hard no, add `{"pattern": "\\bfraud\\b", "reason": "fraud domain"}`.
+2. **`hard_no_title_patterns`** — the "Hard no" domains from Step 2 (Domain Preferences), converted to plain-text entries. Each entry needs `"text"` and `"reason"`. Example: if "fraud" is a hard no, add `{"text": "fraud", "reason": "fraud domain"}`. Use the most specific phrase that captures the pattern without over-filtering — prefer `"infrastructure pm"` over `"infrastructure"`.
 
 3. **`skip_companies`** — start empty `[]`. The user hasn't seen any feeds yet, so there are no known-bad companies. `/calibrate` will populate this over time.
 
-4. **`exclude_locations`** — regex patterns for locations to exclude. Derive from the user's location config:
-   - If US-only (primary city in the US, accept remote = yes): add standard international exclusions (UK, Ireland, Canada, EU, APAC, EMEA)
+4. **`exclude_locations`** — plain location strings to exclude. Derive from the user's location config:
+   - If US-only (primary city in the US, accept remote = yes): add standard international exclusions (e.g. `"united kingdom"`, `"london"`, `"canada"`, `"ireland"`, `"emea"`, `"australia"`, `"singapore"`)
    - If UK-only: add US states, APAC, etc.
    - If open to international: leave empty `[]`
 
@@ -360,7 +365,7 @@ cp feed-agent/config.sh.template feed-agent/config.sh
 
 Open `feed-agent/config.sh` and set `CLAUDE_BIN` to the path from `which claude`. This file is gitignored — it stays on your machine only.
 
-4. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.[username].jobfeed.plist` using the Hour and Minute from step 1:
+4. Get the username: `whoami`. Create `~/Library/LaunchAgents/com.careercoachai.feed.plist` using the Hour and Minute from step 1:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -369,11 +374,11 @@ Open `feed-agent/config.sh` and set `CLAUDE_BIN` to the path from `which claude`
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.[username].jobfeed</string>
+    <string>com.careercoachai.feed</string>
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/[username]/Documents/Claude/agents/career-coach/feed-agent/run-daily.sh</string>
+        <string>/Users/[username]/CareerScout/feed-agent/run-daily.sh</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>
@@ -383,23 +388,25 @@ Open `feed-agent/config.sh` and set `CLAUDE_BIN` to the path from `which claude`
         <integer>0</integer>
     </dict>
     <key>StandardOutPath</key>
-    <string>/Users/[username]/Documents/Claude/agents/career-coach/feed-agent/run.log</string>
+    <string>/Users/[username]/CareerScout/feed-agent/run.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/[username]/Documents/Claude/agents/career-coach/feed-agent/run.log</string>
+    <string>/Users/[username]/CareerScout/feed-agent/run.log</string>
     <key>RunAtLoad</key>
     <false/>
 </dict>
 </plist>
 ```
 
-5. Load it: `launchctl load ~/Library/LaunchAgents/com.[username].jobfeed.plist`
+5. Load it: `launchctl load ~/Library/LaunchAgents/com.careercoachai.feed.plist`
 
-6. **Grant Full Disk Access to bash** — required for launchd to read files in ~/Documents:
+6. **Grant Full Disk Access to bash** — required for launchd to read/write files in ~/Documents. Do this *before* the first scheduled run, or the feed will silently fail:
    - Open **System Settings → Privacy & Security → Full Disk Access**
    - Click **+**, then press **⌘⇧G**, type `/bin/bash`, and click Open
    - You'll see bash added to the list — toggle it on if it isn't already
 
-7. Confirm: `launchctl list | grep jobfeed` — should show the job listed.
+   > **What to expect:** When the scheduler first runs, macOS may still show a dialog saying "bash wants to access files in your Documents folder." That's normal — click **Allow**. It's the job feed scheduler, not anything suspicious.
+
+7. Confirm: `launchctl list | grep careercoachai` — should show the job listed.
 
 > The scheduler fires at [chosen time] daily. If your Mac is asleep at that time, it runs automatically when you wake it — no manual trigger needed.
 

@@ -173,6 +173,28 @@ feed:
 - `sources.md` — avoid section, target signals, priority companies, comp band
 - `differentiators.md` — edge scoring notes, key differentiator bullets
 
+### my_filters.json format (plain strings — no regex)
+
+All matching is case-insensitive substring. Commas and hyphens are ignored when matching.
+
+```json
+// hard_no_title_patterns — use "text" key, not "pattern"
+{"text": "fraud", "reason": "fraud domain"}
+{"text": "infrastructure pm", "reason": "infra PM"}
+
+// skip_companies — "match" is "substring" (default) or "exact" for short names
+{"name": "acme corp", "match": "substring", "reason": "industrial B2B"}
+{"name": "sap",       "match": "exact",     "reason": "B2B enterprise ERP"}
+
+// non_role_patterns — plain strings
+"software engineer"
+"recruiter"
+
+// exclude_locations — plain strings
+"united kingdom"
+"canada"
+```
+
 ## What it cannot change without explicit user request
 
 - `feed.md` (the scoring rubric and thresholds) — structural change, risks

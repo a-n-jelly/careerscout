@@ -31,8 +31,8 @@ Paste a job description and `/assess` gives you a fit verdict, ranked recruiter 
 
 | Command | What it does |
 |---------|--------------|
-| `/improve-resume` | Review and strengthen your master resume _(untested — use with caution)_ |
-| `/assess` | Fit verdict, recruiter concerns, and Mnookin fit — feedback updates bank.md, profile.md, and differentiators.md |
+| `/improve-resume` | Review and strengthen your master resume |
+| `/assess` | Fit verdict, recruiter concerns, and culture fit check — feedback updates your context files |
 | `/tailor-resume` | Tailor your resume to the JD |
 | `/cover-letter` | Write a cover letter in your voice |
 | `/notes` | Capture recruiter feedback or call notes |
@@ -43,18 +43,29 @@ Paste a job description and `/assess` gives you a fit verdict, ranked recruiter 
 
 ## Setup
 
-**Prerequisites:** [Claude Code](https://claude.ai/code) installed. Python 3.x only needed for the job feed.
+**Prerequisites:** [Claude Code](https://claude.ai/code) installed. Python 3.x + `python-jobspy` only needed for the job feed — you can skip that and still use everything else.
 
 ### 1. Clone and open
 
 ```bash
-git clone https://github.com/a-n-jelly/careerscout.git
-cd career-coach
+git clone https://github.com/a-n-jelly/CareerScout.git
+cd CareerScout
 ```
 
 Open Claude Code in this directory.
 
-### 2. Run `/setup`
+### 2. Install Python dependencies (feed only)
+
+Skip this if you're not using the job feed. Otherwise:
+
+```bash
+python3 -m venv feed-agent/.venv
+feed-agent/.venv/bin/pip install -r feed-agent/requirements.txt
+```
+
+Or with system Python: `pip install python-jobspy`.
+
+### 3. Run `/setup`
 
 Type `/setup` in Claude Code. It walks you through everything in one flow:
 
@@ -64,6 +75,8 @@ Type `/setup` in Claude Code. It walks you through everything in one flow:
 - Configures the job feed (optional)
 
 Each step can be skipped and done later.
+
+> **macOS: if you use the daily scheduler,** macOS will eventually show a dialog saying "bash wants to access files in your Documents folder." That's the job feed — click **Allow**. If you accidentally denied it: System Settings → Privacy & Security → Full Disk Access → add `/bin/bash` (use ⌘⇧G to navigate there) and toggle it on.
 
 ---
 
@@ -86,7 +99,7 @@ The agent reads `context/` at session start — you don't re-explain your backgr
 
 The feed is the area with the most room to grow. In priority order:
 
-- **Workday ATS support** — some target companies (Remitly, others) moved to Workday. Direct ATS scraping for Workday would close the biggest remaining fetch gap.
+- **Workday ATS support** — many companies use Workday for hiring. Direct ATS scraping for Workday would close the biggest remaining fetch gap.
 - **Wellfound as a source** — startup and early-stage roles that don't appear on LinkedIn. Worth adding once core calibration is stable.
 - **Calibration improvements** — smarter feedback loops: domain rejections updating Domain Preferences automatically, pattern summaries after enough runs, Edge scoring feedback when a strong-match role gets rejected.
 - **Feed debug command** — paste a LinkedIn URL to diagnose why a role wasn't fetched (wrong query, broken ATS slug, outside result window).
@@ -95,4 +108,6 @@ The feed is the area with the most room to grow. In priority order:
 
 ## Contributing
 
-See `CLAUDE.md` for the full agent instructions and file index.
+The agent's behaviour is defined in `.claude/commands/` (command protocols) and `.claude/skills/` (reusable skill instructions). `CLAUDE.md` has the full file index and session rules. The feed pipeline lives in `feed-agent/` — `fetch.py`, `filter_roles.py`, and `enrich.py` are the three steps that run before Claude scores anything.
+
+PRs welcome. If you're adding a new command, follow the pattern in `.claude/commands/assess.md` — explicit protocol steps, no ambient assumptions.

@@ -86,12 +86,21 @@ Score each role on four dimensions (0–3 each, total 0–12):
 
 **Requirements (0–3)** — does the candidate meet stated requirements?
 
-- 3 = meets core requirements · 2 = minor gap, mostly qualified · 1 = clear domain gap · 0 = disqualifying requirement
-- Pure skills judgment — level is handled by thresholds below, do not double-penalize it here.
+- 3 = meets core requirements with no significant gaps
+- 2 = minor gap in one area; otherwise clearly qualified
+- 1 = clear domain gap, OR any item from `## Hard gaps` in `context/differentiators.md` appears in the stated requirements — even if the rest of the role fits well
+- 0 = disqualifying requirement the candidate cannot credibly claim
+
+Pure skills judgment — level is handled by thresholds below, do not double-penalise it here. Before assigning above a 1, check `## Hard gaps` in differentiators.md.
 
 **Edge (0–3)** — do the differentiators in `context/differentiators.md` give a specific advantage?
 
-- Use the "Notes for scoring" section in that file.
+- 3 = direct, named match: a specific differentiator (company, product, or outcome) maps explicitly to this role's stated focus
+- 2 = pattern match: same product type, scale, or domain as a key differentiator — no named connection but a clear hook
+- 1 = thin transfer: same broad category but no specific hook; advantage is arguable at best
+- 0 = no meaningful connection between differentiators and role requirements
+
+Use the `## Notes for scoring` section in differentiators.md as the trigger list.
 
 **Sustain (0–3)** — location first, then comp.
 
@@ -126,14 +135,14 @@ Tag `above_target` roles `[ABOVE LEVEL]`. Tag Priority Company roles `[TARGET]`.
 
 [N recommended] · [N stretch] · [N skipped] ([N pre-filtered] auto-removed before scoring)
 
-**Fit scoring:** Match (domain fit) / Requirements (stated requirements met) / Edge (differentiator advantage) / Sustain (comp + location). Each 0–3, total 0–12. Target-level roles recommend at ≥7; Priority Companies [TARGET] at ≥6. Above-level roles appear in Stretch only.
+**Fit scoring:** Match (domain fit) / Requirements (stated requirements met) / Edge (differentiator advantage) / Sustain (comp + location). Each 0–3, total 0–12. Each dimension shows a brief reason inline, e.g. `Match 3 (fintech — Proven)`. Target-level roles recommend at ≥7; Priority Companies [TARGET] at ≥6. Above-level roles appear in Stretch only.
 
 ---
 
 ## Recommended
 
 ### [Role Title] — [Company] [TARGET] [REPOST]
-- **Fit score:** Match [N] / Requirements [N] / Edge [N] / Sustain [N] = [total]/12
+- **Fit score:** Match [N] ([reason]) / Requirements [N] ([reason]) / Edge [N] ([reason]) / Sustain [N] ([reason]) = [total]/12
 - **Why this is yours:** [one sentence referencing a specific differentiator — not generic language]
 - **Link:** [URL or "direct ATS — no link"]
 - **Location:** [location] · [Remote / Hybrid / On-site]
@@ -157,7 +166,7 @@ Tag `above_target` roles `[ABOVE LEVEL]`. Tag Priority Company roles `[TARGET]`.
 _These roles are above your current target level. Surface them if the score is strong, but don't pursue unless you're deliberately aiming up._
 
 ### [Role Title] — [Company] [TARGET] [REPOST] [ABOVE LEVEL]
-- **Fit score:** Match [N] / Requirements [N] / Edge [N] / Sustain [N] = [total]/12
+- **Fit score:** Match [N] ([reason]) / Requirements [N] ([reason]) / Edge [N] ([reason]) / Sustain [N] ([reason]) = [total]/12
 - **Why this is yours:** [one sentence referencing a specific differentiator — not generic language]
 - **Link:** [URL or "direct ATS — no link"]
 - **Location:** [location] · [Remote / Hybrid / On-site]
