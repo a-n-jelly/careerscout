@@ -3,7 +3,7 @@
 feed-agent/fetch.py — Daily job fetch engine
 
 Reads sources.md → runs JobSpy → hits ATS endpoints → dedupes → writes today_raw.json
-Run from career-coach/ root: python3 feed-agent/fetch.py
+Run from CareerScout/ root: python3 feed-agent/fetch.py
 """
 
 import json
@@ -28,8 +28,8 @@ except ImportError:
     print("ERROR: python-jobspy not installed. Run: pip install python-jobspy")
     sys.exit(1)
 
-BASE       = Path(__file__).parent.parent   # career-coach/
-FEED_AGENT = Path(__file__).parent          # career-coach/feed-agent/
+BASE       = Path(__file__).parent.parent   # CareerScout/
+FEED_AGENT = Path(__file__).parent          # CareerScout/feed-agent/
 SOURCES      = BASE / "context" / "sources.md"
 LEARNINGS    = FEED_AGENT / "learnings.md"
 SEEN_JSON    = FEED_AGENT / "seen.json"

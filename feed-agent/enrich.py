@@ -13,7 +13,7 @@ What it does:
   - Indeed / other JobSpy sources: already have description from fetch.py, skip
   - Ashby: no stable individual posting API — left as-is (description stays empty)
 
-Run from career-coach/ root: python3 feed-agent/enrich.py
+Run from CareerScout/ root: python3 feed-agent/enrich.py
 """
 
 import html as html_module

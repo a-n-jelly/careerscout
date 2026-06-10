@@ -427,7 +427,7 @@ Make it executable: `chmod +x feed-agent/run-daily.sh`
 3. Add this line using the chosen hour/minute (replacing the path with the actual absolute path):
 
 ```
-[MINUTE] [HOUR] * * * /bin/bash /home/[username]/Documents/Claude/agents/career-coach/feed-agent/run-daily.sh
+[MINUTE] [HOUR] * * * /bin/bash /home/[username]/CareerScout/feed-agent/run-daily.sh
 ```
 
 4. Save and exit. Confirm: `crontab -l` — should show the entry.
@@ -451,12 +451,12 @@ Add-Content $Log "Done."
    - **Trigger**: Daily at 8:00 AM
    - **Action**: Start a program
    - **Program**: `powershell.exe`
-   - **Arguments**: `-ExecutionPolicy Bypass -File "C:\Users\[username]\Documents\Claude\agents\career-coach\feed-agent\run-daily.ps1"`
+   - **Arguments**: `-ExecutionPolicy Bypass -File "C:\Users\[username]\Documents\Claude\agents\CareerScout\feed-agent\run-daily.ps1"`
 
 3. Or via command line (run as Administrator):
 
 ```cmd
-schtasks /create /tn "JobFeedFetch" /tr "powershell.exe -ExecutionPolicy Bypass -File \"C:\Users\[username]\Documents\Claude\agents\career-coach\feed-agent\run-daily.ps1\"" /sc daily /st 08:00
+schtasks /create /tn "JobFeedFetch" /tr "powershell.exe -ExecutionPolicy Bypass -File \"C:\Users\[username]\Documents\Claude\agents\CareerScout\feed-agent\run-daily.ps1\"" /sc daily /st 08:00
 ```
 
 4. Confirm: `schtasks /query /tn "JobFeedFetch"`
