@@ -49,7 +49,7 @@ Paste a job description and `/assess` gives you a fit verdict, ranked recruiter 
 
 ```bash
 git clone https://github.com/a-n-jelly/careerscout.git
-cd career-coach
+cd careerscout
 ```
 
 Open Claude Code in this directory.
